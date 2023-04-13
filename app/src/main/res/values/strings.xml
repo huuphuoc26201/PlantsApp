@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="top_icon">TOP ICON</string>
+    <string name="login">LOGIN</string>
+    <string name="forgot_password">QUÊN MẬT KHẨU ?</string>
+    <string name="google_icon">google icon</string>
+    <string name="facebook_icon">facebook icon</string>
+    <string name="new_user_register_now">Bạn Chưa Có Tài Khoản?</string>
+    <string name="register_now"> Đăng Ký Ngay </string>
+    <string name="dangnhap">   Đăng nhập</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

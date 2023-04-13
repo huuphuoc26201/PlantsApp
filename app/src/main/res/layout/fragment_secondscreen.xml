@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".onboarding.Secondscreen">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="360dp"
+        android:layout_height="280dp"
+        android:src="@drawable/f2"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="top|center"
+        />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="serif"
+        android:layout_gravity="top|center"
+        android:text="Learn Many Plants Species"
+        android:textColor="#36455A"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="313dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:layout_gravity="top|center"
+        android:gravity="center"
+        android:text="Let's learn about the many plant species that exist in this world"
+        android:textColor="#495566"
+        android:textSize="15dp"
+        android:textStyle="normal" />
+
+</LinearLayout>
