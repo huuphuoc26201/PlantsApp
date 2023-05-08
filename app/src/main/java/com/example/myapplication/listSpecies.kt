@@ -28,9 +28,10 @@ class listSpecies : AppCompatActivity() {
         val enamespecies=findViewById<TextView>(R.id.textView15)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         searchView = findViewById(R.id.searchView)
-        namespecies.text = intent.getStringExtra("species")
-        enamespecies.text = intent.getStringExtra("species")
-
+        val ename:String=intent.getStringExtra("species").toString()
+        val formattedData = ename.toLowerCase().capitalize()
+        namespecies.text = formattedData
+        enamespecies.text = formattedData
         userRecyclerview = findViewById(R.id.RecyclerView)
         userRecyclerview.layoutManager = LinearLayoutManager(this)
         userRecyclerview.setHasFixedSize(true)
