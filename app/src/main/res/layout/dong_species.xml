@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="390dp"
     android:layout_height="173dp"
+    android:layout_gravity="center|top"
+    android:layout_margin="5dp"
+    android:layout_marginLeft="3dp"
     android:background="#33C8C1C1">
 
     <ImageView
@@ -93,12 +96,14 @@
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="160dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="#495566"
         android:textSize="12dp"
-        android:text="Cactus spines are produced from specialized structures..."
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="The word 'cactus' derives, through Latin, from the Ancient Greek κάκτος, kaktos, a name orig inally used by Theophrastus for a spiny plant whose identity is not certain. Cacti occur in a wide range of shapes and sizes. Most cacti live in habitats subject to at least some drought."
         app:layout_constraintStart_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 </androidx.constraintlayout.widget.ConstraintLayout>

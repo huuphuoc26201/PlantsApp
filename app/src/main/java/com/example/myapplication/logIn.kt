@@ -131,7 +131,7 @@ class logIn : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val verification=auth.currentUser?.isEmailVerified
                     if(verification==true){
-                        val intent=Intent(this,MainActivity::class.java)
+                        val intent=Intent(this,Home::class.java)
                         Toast.makeText(baseContext, "Đăng nhập thành công!",
                             Toast.LENGTH_SHORT).show()
                         startActivity(intent)}
@@ -194,7 +194,7 @@ class logIn : AppCompatActivity() {
                 .addOnCompleteListener{task->
                     if(task.isSuccessful){
 
-                        val intent  = Intent(this,MainActivity::class.java)
+                        val intent  = Intent(this,Home::class.java)
                         Toast.makeText(this,"Đăng nhập bằng Google thành công!",Toast.LENGTH_SHORT).show()
                         startActivity(intent)
 

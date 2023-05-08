@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/img_species" />
@@ -28,10 +29,35 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="23dp"
             android:layout_marginTop="60dp"
+            android:onClick="prev"
             android:background="@drawable/ic_baseline_arrow_back_ios_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-27dp"
+        android:layout_marginEnd="26dp"
+        android:src="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/thatym"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="-29dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/app_name"
+        android:onClick="tym"
+        android:src="@drawable/icon_favorite_love"
+        app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+
 
     <TextView
         android:id="@+id/textView15"
@@ -78,15 +104,14 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginStart="-60dp"
+        android:layout_marginTop="-5dp"
         android:contentDescription="@string/app_name"
         android:numStars="5"
+        android:layout_marginLeft="-62dp"
         android:progressTint="@color/yellow"
         android:rating="3.5"
-        android:scaleSize="10dp"
         android:scaleX="0.5"
         android:scaleY="0.5"
-        android:stepSize="0.5"
         app:layout_constraintStart_toStartOf="@+id/textView17"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
