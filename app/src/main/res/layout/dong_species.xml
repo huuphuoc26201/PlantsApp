@@ -17,6 +17,7 @@
         android:layout_marginStart="28dp"
         android:background="@color/white"
         android:padding="7dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/species"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

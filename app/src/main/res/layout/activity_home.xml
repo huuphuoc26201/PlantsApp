@@ -22,7 +22,7 @@
             android:layout_marginEnd="35dp"
             android:layout_marginTop="75dp"
             android:layout_marginLeft="305dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/img_2"
             app:civ_border_color="#2DDA93"
             app:civ_border_width="2dp" />
 
@@ -69,7 +69,6 @@
         android:layout_height="447dp"
         android:layout_below="@+id/searchView"
         android:layout_alignParentStart="true"
-
         android:layout_alignParentEnd="true"
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +129,54 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/adding_new" />
 
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="29dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Plant Types"
+                android:textColor="#36455A"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/adding_new"
+                app:layout_constraintTop_toBottomOf="@+id/adding_new" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerView"
+                android:layout_width="382dp"
+                android:layout_height="171dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21"
+                tools:listitem="@layout/dong_planttypes" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Photography"
+                android:textColor="#36455A"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/RecyclerView"
+                app:layout_constraintTop_toBottomOf="@+id/RecyclerView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecyclerView1"
+                android:layout_width="382dp"
+                android:layout_height="155dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/textView22"
+                tools:listitem="@layout/dong_photo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

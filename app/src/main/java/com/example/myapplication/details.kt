@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import de.hdodenhof.circleimageview.CircleImageView
 
 class details : AppCompatActivity() {
@@ -20,8 +21,22 @@ class details : AppCompatActivity() {
         val description=findViewById<TextView>(R.id.textView13)
         val evaluate=findViewById<TextView>(R.id.textView18)
         val image=findViewById<ImageView>(R.id.image)
-
         val ratingbar=findViewById<RatingBar>(R.id.ratingBar)
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.home -> {
+                    startActivity(Intent(this, Home::class.java))
+                    true
+                }
+                R.id.person -> {
+                    startActivity(Intent(this, details::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
 
         text= intent.getStringExtra("evaluate").toString()
         val f: Float = text.toFloat()
@@ -43,7 +58,7 @@ class details : AppCompatActivity() {
         }
     }
     fun prev(view: View?){
-        startActivity(Intent(this, listSpecies::class.java))
+        startActivity(Intent(this, species::class.java))
         finish()
     }
 }

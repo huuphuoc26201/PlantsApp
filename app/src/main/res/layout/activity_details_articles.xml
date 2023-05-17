@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".details">
-
+    tools:context=".detailsArticles">
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -18,20 +17,18 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="265dp"
+                android:layout_height="281dp"
                 android:background="#80BFB8B8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
                 <ImageView
                     android:id="@+id/image"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="281dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img_species" />
 
@@ -43,8 +40,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="23dp"
                     android:layout_marginTop="60dp"
-                    android:background="@drawable/ic_baseline_arrow_back_ios_24"
                     android:onClick="prev"
+                    android:background="@drawable/ic_baseline_arrow_back_ios_24"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </RelativeLayout>
@@ -53,8 +50,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="-27dp"
-                android:layout_marginEnd="27dp"
+                android:layout_marginTop="-26dp"
+                android:layout_marginEnd="28dp"
                 android:src="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
@@ -72,30 +69,29 @@
                 app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
-
             <TextView
                 android:id="@+id/textView15"
-                android:layout_width="78dp"
+                android:layout_width="106dp"
                 android:layout_height="23dp"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="24dp"
-                android:background="#1A2F91EB"
-                android:gravity="center"
-                android:text="DANGER"
-                android:textColor="#2F91EB"
+                android:text="VEGETABLES"
                 android:textSize="12dp"
+                android:gravity="center"
                 android:textStyle="bold"
+                android:background="#1A2F91EB"
+                android:textColor="#2F91EB"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
             <TextView
                 android:id="@+id/textView16"
-                android:layout_width="108dp"
+                android:layout_width="77dp"
                 android:layout_height="23dp"
                 android:layout_marginStart="16dp"
                 android:background="#1A2F91EB"
                 android:gravity="center"
-                android:text="DECORATION"
+                android:text="GARDEN"
                 android:textColor="#2F91EB"
                 android:textSize="12dp"
                 android:textStyle="bold"
@@ -104,127 +100,114 @@
 
             <TextView
                 android:id="@+id/textView17"
-                android:layout_width="wrap_content"
+                android:layout_width="336dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="Circle Cactus"
-                android:textColor="#495566"
-                android:textSize="33dp"
+                android:layout_marginTop="20dp"
+                android:text="Even on Urban Excursions, \nFinding Mother Nature's Charms"
                 android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="#495566"
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-            <RatingBar
-                android:id="@+id/ratingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="-62dp"
-                android:layout_marginTop="-5dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/app_name"
-                android:numStars="5"
-                android:progressTint="@color/yellow"
-                android:rating="3.5"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
+                android:onClick="tym"
+                android:src="@drawable/img_1"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="25dp"
-                android:text="4.1"
-                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:text="Shivani Vora"
+                android:textColor="#36455A"
+                android:textSize="14dp"
+                android:layout_marginTop="-2dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="2019 . 01 . 01"
+                android:textColor="#36455A"
                 android:textSize="12dp"
-                app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
-                app:layout_constraintEnd_toEndOf="@+id/ratingBar"
-                app:layout_constraintTop_toTopOf="@+id/ratingBar" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="KINGDOM"
-                android:textColor="#495566"
-                android:textSize="17dp"
-                app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="FAMILY"
-                android:textColor="#495566"
-                android:textSize="17dp"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toTopOf="@+id/textView8" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Plantae"
-                android:textColor="#6A6F7D"
-                android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Cactaceae"
-                android:textColor="#6A6F7D"
-                android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="@+id/textView9"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="DESCRIPTION"
-                android:textColor="#495566"
-                android:textSize="12dp"
-                app:layout_constraintStart_toStartOf="@+id/textView10"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                android:layout_marginTop="2dp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="360dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="15dp"
                 android:lineSpacingExtra="6dp"
-                android:text="The word 'cactus' derives, through Latin, from the Ancient Greek κάκτος, kaktos, a name orig inally used by Theophrastus for a spiny plant whose identity is not certain. Cacti occur in a wide range of shapes and sizes. Most cacti live in habitats subject to at least some drought."
+                android:text="Public parks aside, getting a dose of nature can be a tricky task during an urban escape. But nat ure should and can fit into that city getaway, acc ording to Kally Ellis, the founder of the London fl orist company McQueens and the in-house florist for the Maybourne Hotel Group. “Connecting with the natural world wherever you are is a great antid ote to jet lag and travel tiredness,” she said. “Plants and flowers can refresh us, boost our energy and help us recalibrate.”"
                 android:textColor="#6A6F7D"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textView12"
-                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                app:layout_constraintStart_toStartOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="73dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="34dp"
+                android:background="@drawable/custom_button_7"
+                android:gravity="center"
+                android:text="Follow"
+                android:onClick="unfollow"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="73dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="34dp"
+                android:background="@drawable/custom_button_6"
+                android:gravity="center"
+                android:text="+ Follow"
+                android:onClick="follow"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/CoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="85dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
