@@ -60,19 +60,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/unthatym"
+                android:layout_width="57dp"
+                android:layout_height="57dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-29dp"
+                android:layout_marginEnd="24dp"
+                android:onClick="untym"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/icons_love"
+                app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/thatym"
                 android:layout_width="57dp"
                 android:layout_height="57dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="-29dp"
                 android:layout_marginEnd="24dp"
-                android:contentDescription="@string/app_name"
                 android:onClick="tym"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/icon_favorite_love"
                 app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
-
-
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="78dp"

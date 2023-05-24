@@ -56,7 +56,7 @@ class listSpecies : AppCompatActivity() {
                 }
 
                 R.id.person -> {
-                    startActivity(Intent(this, details::class.java))
+                    startActivity(Intent(this, Profile::class.java))
                     true
                 }
                 else -> false

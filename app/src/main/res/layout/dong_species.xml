@@ -6,7 +6,7 @@
     android:layout_width="390dp"
     android:layout_height="173dp"
     android:layout_gravity="center|top"
-    android:layout_margin="5dp"
+    android:layout_marginBottom="10dp"
     android:layout_marginLeft="3dp"
     android:background="#33C8C1C1">
 

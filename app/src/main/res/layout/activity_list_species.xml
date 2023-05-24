@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#33C8C1C1"
     android:layout_height="match_parent"
     tools:context=".listSpecies">
 
@@ -14,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
 
         <TextView
             android:id="@+id/textView1"
@@ -72,8 +72,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerView"
         android:layout_width="409dp"
-        android:layout_height="440dp"
+        android:layout_height="430dp"
         android:layout_marginLeft="5dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
@@ -82,12 +83,12 @@
         android:id="@+id/CoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="85dp"
+        android:background="#33C8C1C1"
         android:layout_above="@+id/RecyclerView"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
