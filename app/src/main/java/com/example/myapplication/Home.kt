@@ -41,7 +41,7 @@ class Home : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.home
         val specie= findViewById<Button>(R.id.specise)
-        val loout=findViewById<CircleImageView>(R.id.profile_image)
+        val btnprofile=findViewById<CircleImageView>(R.id.profile_image)
         val addingnew=findViewById<Button>(R.id.adding_new)
 
         addingnew.setOnClickListener {
@@ -51,10 +51,8 @@ class Home : AppCompatActivity() {
 
 
         profile()
-        loout.setOnClickListener{
-            FirebaseAuth.getInstance().signOut()
-
-            val intent = Intent(this, logIn::class.java)
+        btnprofile.setOnClickListener{
+            val intent = Intent(this, Profile::class.java)
             startActivity(intent)
             finish()
 
@@ -65,7 +63,7 @@ class Home : AppCompatActivity() {
         }
         val article= findViewById<Button>(R.id.articles)
         article.setOnClickListener{
-            startActivity(Intent(this, addingNew::class.java))
+            startActivity(Intent(this, articles::class.java))
             finish()
         }
 
@@ -166,7 +164,7 @@ class Home : AppCompatActivity() {
         val name = users.displayName
         val eemail = users.email
         val photoUrl: Uri? = users.photoUrl
-        tvname.text = name
+        tvname.text = "Hello "+name+","
         Glide.with(this@Home).load(photoUrl).error(R.drawable.img_2)
             .into(image)
         val userRef = FirebaseDatabase.getInstance().getReference("Users")

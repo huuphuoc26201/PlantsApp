@@ -26,6 +26,7 @@ import java.util.*
 
 class Edit_Profile : AppCompatActivity() {
     private lateinit var sEmail: String
+    lateinit var avt:String
     private lateinit var sfullName: String
     private lateinit var name: String
     lateinit var avatar:CircleImageView
@@ -64,9 +65,6 @@ class Edit_Profile : AppCompatActivity() {
                 // show the builder
                 .show()
         }
-
-
-
         avatar.setOnClickListener {
             val intent = Intent()
                 .setType("image/*")
@@ -76,48 +74,66 @@ class Edit_Profile : AppCompatActivity() {
 
 
 
-
     }
 
     private fun firebaseUser() {
         sEmail = editemail.text.toString().trim()
         sfullName = editname.text.toString().trim()
         val users = FirebaseAuth.getInstance().currentUser ?: return
+        val ename = users.displayName
         val eemail = users.email
-        val userRef = FirebaseDatabase.getInstance().getReference("Users")
-            .orderByChild("email")
-            .equalTo(eemail)
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (ds in dataSnapshot.children) {
-                    val user = ds.getValue(userData::class.java)
-                    if (user != null) {
-                        name= user?.key.toString()
-                        val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
-                        databaseRef.addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val imageUrl = snapshot.children.lastOrNull()?.value as? String
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        val user = ds.getValue(userData::class.java)
+                        if (user != null) {
+                            name= user?.key.toString()
+                            val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
+                            databaseRef.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val imageUrl = snapshot.children.lastOrNull()?.value as? String
 
-                                val User=userData(sfullName,sEmail,imageUrl,name)
-                                val ref = database.getReference("Users")
-                                val key = ref.push().key
-                                key?.let {
-                                    val userRef = ref.child(name)
-                                    userRef.setValue(User)
-
+                                    val User=userData(sfullName,sEmail,imageUrl,name)
+                                    val ref = database.getReference("Users")
+                                    val key = ref.push().key
+                                    key?.let {
+                                        val userRef = ref.child(name)
+                                        userRef.setValue(User)
+                                    }
                                 }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                // Xử lý khi không thể truy xuất database
-                            }
-                        })
-
-
+                                override fun onCancelled(error: DatabaseError) {
+                                    // Xử lý khi không thể truy xuất database
+                                }
+                            })
+                        }
                     }
+                } else {
+                    // Hiển thị thông báo lỗi
+                    val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
+                    databaseRef.addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val imageUrl = snapshot.children.lastOrNull()?.value as? String
+
+                            val User=userData(sfullName,sEmail,imageUrl,ename.toString())
+                            val ref = database.getReference("Users")
+                            val key = ref.push().key
+                            key?.let {
+                                val userRef = ref.child(ename.toString())
+                                userRef.setValue(User)
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // Xử lý khi không thể truy xuất database
+                        }
+                    })
                 }
             }
+
             override fun onCancelled(databaseError: DatabaseError) {
+                // Xảy ra lỗi trong quá trình đọc dữ liệu
+
             }
         })
     }

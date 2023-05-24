@@ -8,7 +8,8 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="390dp"
-        android:layout_height="310dp"
+        android:layout_height="320dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/species"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -24,6 +24,7 @@ class species : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_species)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.selectedItemId = R.id.home
         userRecyclerview = findViewById(R.id.RecyclerView)
         searchView = findViewById(R.id.searchView)
         userRecyclerview.layoutManager = LinearLayoutManager(this)

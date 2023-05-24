@@ -27,6 +27,7 @@ class listSpecies : AppCompatActivity() {
         val namespecies=findViewById<TextView>(R.id.textView14)
         val enamespecies=findViewById<TextView>(R.id.textView15)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.selectedItemId = R.id.home
         searchView = findViewById(R.id.searchView)
         val ename:String=intent.getStringExtra("species").toString()
         val formattedData = ename.toLowerCase().capitalize()
