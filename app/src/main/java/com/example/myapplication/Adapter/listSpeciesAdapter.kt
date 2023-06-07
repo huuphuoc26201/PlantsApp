@@ -42,6 +42,7 @@ class listSpeciesAdapter(userList1: listSpecies, private val userList: ArrayList
             intent.putExtra("namespecies", currentitem.namespecies)
             intent.putExtra("evaluate", currentitem.evaluate)
             intent.putExtra("description", currentitem.description)
+            intent.putExtra("prev", "species")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             holder.itemView.context.startActivity(intent)
 

@@ -6,7 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".Edit_Profile">
 
-
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/ic_back"
+        android:onClick="prev"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -36,15 +47,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="155dp"
+        android:layout_height="32dp"
+        android:background="#66EDE9E9"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:padding="3dp"
+        android:onClick="changepassword"
+        android:layout_marginBottom="15dp"
+        android:text="Change Password"
+        android:textColor="#272A2E"
+        android:textSize="16dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/fullnamelLayout"
+        app:layout_constraintEnd_toEndOf="@+id/fullnamelLayout" />
+
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageAvt"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="35dp"
-        android:src="@drawable/img_2"
+        android:src="@drawable/avt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -80,8 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"
+        android:layout_marginTop="70dp"
         android:layout_marginEnd="23dp"
-        android:layout_marginTop="35dp"
         app:boxStrokeColor="#2DDA93"
         app:hintTextColor="#2DDA93"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="560dp"
+        android:layout_marginTop="590dp"
         android:layout_marginEnd="23dp"
         android:background="@drawable/custom_button_5"
         android:fontFamily="sans-serif-medium"

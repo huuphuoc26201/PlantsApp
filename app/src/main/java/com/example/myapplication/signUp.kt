@@ -61,7 +61,7 @@ class signUp : AppCompatActivity() {
                                 ?.addOnSuccessListener {
                                     firebaseUser()
                                     Toast.makeText(
-                                        this, "Đăng ký thành công!",
+                                        this, "Sign Up Success!",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     Toast.makeText(
@@ -80,7 +80,7 @@ class signUp : AppCompatActivity() {
 
                         } else {
                             Toast.makeText(
-                                this, "Tài khoản đã tồn tại!",
+                                this, "Account already exists!",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -93,8 +93,10 @@ class signUp : AppCompatActivity() {
         sEmail = email.text.toString().trim()
         sPassword = password.text.toString().trim()
         sfullName=name.text.toString().trim()
-        val random1 = nextInt(10, 100).toString().padStart(2, '0')
-        key1=sfullName+random1
+        val randomString = (1..4)
+            .map { (('a'..'z') + ('A'..'Z') + ('0'..'9')).random() }
+            .joinToString("")
+        key1= "NHP$randomString"
         val User=userData(sfullName,sEmail," ",key1)
         val ref = database.getReference("Users")
         val key = ref.push().key
@@ -108,12 +110,12 @@ class signUp : AppCompatActivity() {
     private fun validatename(): Boolean {
         val sName= name.text.toString().trim()
         return if (sName.isEmpty()) {
-            name.setError("Name không được để trống")
+            name.error = "Name can not be blank"
             false
         }
         else
         {
-            name.setError(null)
+            name.error = null
             true
         }
 
@@ -122,19 +124,19 @@ class signUp : AppCompatActivity() {
     private fun validatePassword(): Boolean {
         val pass= password.text.toString().trim()
         //Mật khẩu gồm 11 ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt:
-        val passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*([^a-zA-Z\\d\\s])).{11}\$".toRegex()
+        val passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*([^a-zA-Z\\d\\s])).{11,20}\$".toRegex()
 
         return if (pass.isEmpty()) {
-            password.setError("Password không được để trống")
+            password.error = "Password can not be blank"
             false
         }
         else if(!pass.matches(passwordPattern)){
-            password.setError("Mật khẩu gồm 11 ký tự, ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt")
+            password.error = "Password consists of 11-20 characters, at least one uppercase letter, one lowercase letter, a number and a special character"
             false
         }
         else
         {
-            password.setError(null)
+            password.error = null
             true
         }
     }
@@ -142,15 +144,15 @@ class signUp : AppCompatActivity() {
     private fun validateemail(): Boolean {
         val mail= email.text.toString().trim()
         return if (mail.isEmpty()) {
-            email.setError("Email không được để trống")
+            email.error = "Email can not be blankg"
             false
         }else if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
-            email.setError("Địa chỉ email không hợp lệ!")
+            email.error = "Email address is not valid!"
             false
         }
         else
         {
-            email.setError(null)
+            email.error = null
             true
         }
     }

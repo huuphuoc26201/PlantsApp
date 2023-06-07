@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.articles
-import com.example.myapplication.details
 import com.example.myapplication.detailsArticles
 import com.example.myapplication.model.articlesData
 
@@ -49,6 +48,8 @@ class articlesAdapter(userList1: articles, private val userList: ArrayList<artic
             intent.putExtra("name", currentitem.name)
             intent.putExtra("date", currentitem.date)
             intent.putExtra("description", currentitem.description)
+            intent.putExtra("id", currentitem.id)
+            intent.putExtra("prev", "articles")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             holder.itemView.context.startActivity(intent)
 

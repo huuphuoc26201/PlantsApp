@@ -19,18 +19,24 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import com.example.myapplication.model.userData
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 
 class logIn : AppCompatActivity() {
 
     private lateinit var sharedPreferences:SharedPreferences
     private val FILE_EMAIL="myFile"
+    lateinit var text:String
     private lateinit var sEmail: String
     private lateinit var sPassword: String
     private lateinit var email: EditText
@@ -56,15 +62,10 @@ class logIn : AppCompatActivity() {
         val  sEmail=sharedPreferences.getString("sEmail","")
         val  sPassword=sharedPreferences.getString("sPassword","")
 
-        if(sharedPreferences.contains("checked")&&sharedPreferences.getBoolean("checked",false)==true){
-            checkBox.isChecked=true
-        }else{
-            checkBox.isChecked=false
-        }
+        checkBox.isChecked =
+            sharedPreferences.contains("checked")&&sharedPreferences.getBoolean("checked",false)==true
         email.setText(sEmail)
         password.setText(sPassword)
-
-
 
 
         login.setOnClickListener {
@@ -132,7 +133,7 @@ class logIn : AppCompatActivity() {
                     val verification=auth.currentUser?.isEmailVerified
                     if(verification==true){
                         val intent=Intent(this,Home::class.java)
-                        Toast.makeText(baseContext, "Đăng nhập thành công!",
+                        Toast.makeText(baseContext, "Logged in successfully!",
                             Toast.LENGTH_SHORT).show()
                         startActivity(intent)}
                     else{
@@ -143,10 +144,10 @@ class logIn : AppCompatActivity() {
                     try {
                         throw task.getException()!!;
                     } catch (e: FirebaseAuthInvalidUserException) {
-                        email.setError("Người dùng không tồn tại. Vui lòng đăng ký người dùng mới.");
+                        email.error = "User does not exist. Please register a new user.";
                         email.requestFocus();
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        password.setError("Mật khẩu không đúng. vui lòng kiểm tra và nhập lại.");
+                        password.error = "Incorrect password. please check and re-enter.";
                         password.requestFocus();
                     } catch (e: Exception) {
                         Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT)
@@ -160,27 +161,27 @@ class logIn : AppCompatActivity() {
     private fun validateemail(): Boolean {
         val mail= email.text.toString().trim()
         return if (mail.isEmpty()) {
-            email.setError("Email không được để trống")
+            email.error = "Email can not be blank"
             false
         }else if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
-            email.setError("Địa chỉ email không hợp lệ!")
+            email.error = "Email address is not valid!"
             false
         }
         else
         {
-            email.setError(null)
+            email.error = null
             true
         }
     }
     private fun validatePassword(): Boolean {
         val pass= password.text.toString().trim()
         return if (pass.isEmpty()) {
-            password.setError("Password không được để trống")
+            password.error = "Password can not be blank"
             false
         }
         else
         {
-            password.setError(null)
+            password.error = null
             true
         }
     }
@@ -193,9 +194,38 @@ class logIn : AppCompatActivity() {
             FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener{task->
                     if(task.isSuccessful){
+                        val userName = account?.displayName
+                        val userEmail = account?.email
+                        val userPhotoUrl = account?.photoUrl.toString()
+
+                        // Tạo User object và đưa thông tin lên Realtime Database
+                        val userId = FirebaseAuth.getInstance().currentUser?.uid
+                        val database= FirebaseDatabase.getInstance()
+                        database.getReference("Users").orderByChild("key").equalTo(userId).addListenerForSingleValueEvent(object :
+                            ValueEventListener {
+                            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (ds in dataSnapshot.children) {
+                                        val user = ds.getValue(userData::class.java)
+                                        if (user != null) {
+                                        }
+                                    }
+                                } else {
+                                    val user = userData(userName, userEmail, userPhotoUrl, userId)
+                                    FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(userId.toString())
+                                        .setValue(user)
+                                }
+                            }
+
+                            override fun onCancelled(databaseError: DatabaseError) {
+                                // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+                            }
+                        })
 
                         val intent  = Intent(this,Home::class.java)
-                        Toast.makeText(this,"Đăng nhập bằng Google thành công!",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Sign in with Google successfully!",Toast.LENGTH_SHORT).show()
                         startActivity(intent)
 
                     }else{

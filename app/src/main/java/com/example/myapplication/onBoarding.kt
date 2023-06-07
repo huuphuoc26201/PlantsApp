@@ -40,27 +40,27 @@ class onBoarding : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
 
                 if(position==2){
-                    signin.setVisibility(View.VISIBLE)
-                    skip.setVisibility(View.GONE)
+                    signin.visibility = View.VISIBLE
+                    skip.visibility = View.GONE
                 }else{
-                    signin.setVisibility(View.GONE)
-                    skip.setVisibility(View.VISIBLE)
+                    signin.visibility = View.GONE
+                    skip.visibility = View.VISIBLE
                 }
             }
         })
 
 
-        if(viewpager.getCurrentItem()==0) {
-            signin.setVisibility(View.GONE)
+        if(viewpager.currentItem ==0) {
+            signin.visibility = View.GONE
         }
 
         skip.setOnClickListener{
-            viewpager.setCurrentItem(2)
+            viewpager.currentItem = 2
         }
 
         next.setOnClickListener{
-        if(viewpager.getCurrentItem()<2) {
-            viewpager.setCurrentItem(viewpager.getCurrentItem() + 1)
+        if(viewpager.currentItem <2) {
+            viewpager.currentItem = viewpager.currentItem + 1
         }else{
             val intent = Intent(this, logIn::class.java)
             startActivity(intent)

@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".detailsArticles">
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/CoordinatorLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -40,8 +43,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginStart="23dp"
                     android:layout_marginTop="60dp"
-                    android:onClick="prev"
                     android:background="@drawable/ic_baseline_arrow_back_ios_24"
+                    android:contentDescription="@string/app_name"
+                    android:onClick="prev"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </RelativeLayout>
@@ -51,7 +55,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="-26dp"
+                android:layout_marginTop="-25dp"
                 android:layout_marginEnd="28dp"
                 android:src="@color/white"
                 app:layout_constraintEnd_toEndOf="@+id/relativeLayout2"
@@ -59,11 +63,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/unthatym"
-                android:layout_width="57dp"
-                android:layout_height="57dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="-29dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginTop="-28dp"
+                android:layout_marginEnd="25dp"
                 android:onClick="untym"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/icons_love"
@@ -123,47 +127,57 @@
                 app:layout_constraintStart_toStartOf="@+id/textView15"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView"
-                android:layout_width="37dp"
-                android:layout_height="37dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="16dp"
-                android:contentDescription="@string/app_name"
-                android:onClick="tym"
-                android:src="@drawable/img_1"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/idprofile"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:onClick="next"
                 app:layout_constraintStart_toStartOf="@+id/textView17"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                app:layout_constraintTop_toBottomOf="@+id/textView17">
 
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Shivani Vora"
-                android:textColor="#36455A"
-                android:textSize="14dp"
-                android:layout_marginTop="-2dp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="37dp"
+                    android:layout_height="37dp"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/img_1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="2019 . 01 . 01"
-                android:textColor="#36455A"
-                android:textSize="12dp"
-                android:layout_marginTop="2dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="-2dp"
+                    android:text="Shivani Vora"
+                    android:textColor="#36455A"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:text="2019 . 01 . 01"
+                    android:textColor="#36455A"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView13"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
+                android:layout_width="359dp"
+                android:layout_height="202dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="15dp"
                 android:lineSpacingExtra="6dp"
@@ -171,8 +185,8 @@
                 android:textColor="#6A6F7D"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintStart_toStartOf="@+id/idprofile"
+                app:layout_constraintTop_toBottomOf="@+id/idprofile" />
 
             <TextView
                 android:id="@+id/textView23"
@@ -181,14 +195,16 @@
                 android:layout_marginEnd="34dp"
                 android:background="@drawable/custom_button_7"
                 android:gravity="center"
-                android:text="Follow"
                 android:onClick="unfollow"
-                android:textStyle="bold"
+                android:text="Follow"
                 android:textColor="@color/white"
                 android:textSize="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/idprofile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                app:layout_constraintTop_toTopOf="@+id/idprofile"
+                tools:ignore="DuplicateClickableBoundsCheck" />
+
             <TextView
                 android:id="@+id/textView22"
                 android:layout_width="73dp"
@@ -196,14 +212,14 @@
                 android:layout_marginEnd="34dp"
                 android:background="@drawable/custom_button_6"
                 android:gravity="center"
-                android:text="+ Follow"
                 android:onClick="follow"
-                android:textStyle="bold"
+                android:text="+ Follow"
                 android:textColor="@color/white"
                 android:textSize="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/idprofile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                app:layout_constraintTop_toTopOf="@+id/idprofile" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -212,15 +228,8 @@
         android:id="@+id/CoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
->
+        >
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
@@ -237,7 +246,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/transparent_background"
-
+                app:itemIconTint="@drawable/bottom_nav_item_bg"
+                app:itemTextColor="@drawable/bottom_nav_item_bg"
                 app:menu="@menu/bottom_nav_menu"
 
                 />
@@ -254,4 +264,4 @@
             app:tint="@color/white" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

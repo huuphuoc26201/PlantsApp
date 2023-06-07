@@ -1,25 +1,46 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.example.myapplication
 
+import `in`.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+import android.Manifest.permission_group.CAMERA
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Adapter.RecyclerViewAdapter
 import com.example.myapplication.Adapter.speciesAdapter
 import com.example.myapplication.model.speciesData
+import com.example.myapplication.model.userData
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 import java.util.*
-import kotlin.collections.ArrayList
+import android.Manifest
+
 
 class species : AppCompatActivity() {
     private lateinit var dbref : DatabaseReference
-    private lateinit var userRecyclerview : RecyclerView
+    lateinit var name:String
+    //    private lateinit var userRecyclerview : RecyclerView
+    private lateinit var userRecyclerview: IndexFastScrollRecyclerView
     private lateinit var userArrayList : ArrayList<speciesData>
     private lateinit var searchView: SearchView
 
+    //private val mData by lazy {DataHelper.getAlphabetFullData() }
+//
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_species)
@@ -31,8 +52,20 @@ class species : AppCompatActivity() {
         userRecyclerview.setHasFixedSize(true)
         searchView.clearFocus()
         userArrayList = ArrayList()
-        userArrayList = arrayListOf<speciesData>()
+        userArrayList = arrayListOf()
+        val myadapter=  speciesAdapter(this@species, userArrayList)
+        userRecyclerview.adapter = myadapter
         getUserData()
+        initialiseUI()
+        val fab=findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            }else{
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, 1)
+            }
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -44,7 +77,7 @@ class species : AppCompatActivity() {
             }
         })
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> {
                     startActivity(Intent(this, Home::class.java))
@@ -68,14 +101,15 @@ class species : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 if (snapshot.exists()){
+//                    val dataArray = ArrayList<String>()
 
                     for (userSnapshot in snapshot.children){
-                        val speciesdata = userSnapshot.getValue(speciesData::class.java)
-                        userArrayList.add(speciesdata!!)
+                        val speciesData = userSnapshot.getValue(speciesData::class.java)
+                        userArrayList.add(speciesData!!)
 
                     }
+                    initialiseUI()
                     userRecyclerview.adapter = speciesAdapter(this@species, userArrayList)
-
 
                 }
 
@@ -89,17 +123,117 @@ class species : AppCompatActivity() {
         })
 
     }
+
     private fun searchList(text: String) {
-        val searchList = java.util.ArrayList<speciesData>()
-        for (speciesdata in userArrayList) {
-            if (speciesdata.species?.lowercase()
+        val searchList = ArrayList<speciesData>()
+        for (speciesData in userArrayList) {
+            if (speciesData.species?.lowercase()
                     ?.contains(text.lowercase(Locale.getDefault())) == true
             ) {
-                searchList.add(speciesdata)
+                searchList.add(speciesData)
             }
         }
-        userRecyclerview.adapter = speciesAdapter(this@species, searchList)
+//        userRecyclerview.adapter = speciesAdapter(this@species, searchList)
+        val adapter = speciesAdapter(this@species, searchList)
+        userRecyclerview.adapter = adapter
+    }
+    private fun initialiseUI() {
+        dbref = FirebaseDatabase.getInstance().getReference("Species")
+        userRecyclerview.apply {
+            userRecyclerview.layoutManager = LinearLayoutManager(this@species)
+            adapter = RecyclerViewAdapter(userArrayList.map { it.species } as ArrayList<String>)
 
+
+            setIndexbarMargin(-4F)
+            setIndexTextSize(12)
+            setIndexBarColor("#FFFFFFFF")
+            setIndexBarCornerRadius(0)
+            setIndexBarTransparentValue(0.4.toFloat())
+            setPreviewPadding(0)
+            setIndexBarTextColor("#6A6F7D")
+            setPreviewTextSize(60)
+            setPreviewColor("#FFFFFFFF")
+            setPreviewTextColor("#2DDA93")
+            setPreviewTransparentValue(0.6f)
+            setIndexBarVisibility(true)
+            setIndexBarStrokeVisibility(true)
+            setIndexBarStrokeWidth(1)
+            setIndexBarStrokeColor("#FFFFFFFF")
+            setIndexBarHighLightTextVisibility(true)
+        }
+        Objects.requireNonNull<RecyclerView.LayoutManager>(userRecyclerview.layoutManager)
+            .scrollToPosition(0)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+
+            // Tạo reference tới file ảnh trên FirebaseStorage
+            val storageRef = Firebase.storage.reference
+            val users = FirebaseAuth.getInstance().currentUser ?: return
+            val eemail = users.email
+            val database = FirebaseDatabase.getInstance()
+            database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (ds in dataSnapshot.children) {
+                            val user = ds.getValue(userData::class.java)
+                            if (user != null) {
+                                name= user?.key.toString()
+                                val imagesRef = storageRef.child("PostArticle").child(name).child("${UUID.randomUUID()}.jpg")
+                                // Chuyển đổi bitmap thành byte array để upload lên FirebaseStorage
+                                val baos = ByteArrayOutputStream()
+                                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                                val data = baos.toByteArray()
+
+                                // Upload ảnh lên FirebaseStorage
+                                val uploadTask = imagesRef.putBytes(data)
+
+                                // Lắng nghe sự kiện hoàn thành upload
+                                if (uploadTask != null) {
+                                    uploadTask.continueWithTask { task ->
+                                        if (!task.isSuccessful) {
+                                            task.exception?.let { throw it }
+                                        }
+
+                                        imagesRef.downloadUrl
+                                    }.addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // Lưu đường dẫn của hình ảnh vào database Realtime Database
+                                            val downloadUri = task.result
+                                            val intent = Intent(this@species, addingNew::class.java)
+                                            intent.putExtra("message", downloadUri.toString())
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+                                            // Xử lý khi không thể tải lên hình ảnh
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+                }
+            })
+
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted
+            } else {
+                // Permission has been denied
+            }
+        }
     }
     fun prev(view: View?){
         startActivity(Intent(this, Home::class.java))

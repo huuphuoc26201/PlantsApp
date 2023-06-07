@@ -48,6 +48,7 @@ class favoriteArticlesAdapter(userList1: ArticlesFragment.Companion, private val
             intent.putExtra("name", currentitem.name)
             intent.putExtra("date", currentitem.date)
             intent.putExtra("description", currentitem.description)
+            intent.putExtra("id", currentitem.id)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             holder.itemView.context.startActivity(intent)
 

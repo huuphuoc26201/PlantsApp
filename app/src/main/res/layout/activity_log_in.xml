@@ -126,7 +126,7 @@
         android:layout_marginEnd="23dp"
         android:drawableLeft="@drawable/google"
         android:fontFamily="sans-serif-medium"
-        android:text="Sgin in with Google"
+        android:text="Sign in with Google"
         android:textSize="18dp"
         android:background="@drawable/round_border"
         android:gravity="center"
@@ -137,31 +137,36 @@
         app:layout_constraintTop_toBottomOf="@+id/signipbtn" />
 
 
-    <TextView
-        android:id="@+id/textView6"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="105dp"
         android:layout_marginTop="16dp"
-        android:text="Don't Have Account? "
-        android:textColor="#495566"
-        android:textSize="16dp"
-        android:textStyle="normal"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="5dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lggoogle" />
+        app:layout_constraintTop_toBottomOf="@+id/lggoogle">
 
-    <TextView
-        android:id="@+id/sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:text="SignUp"
-        android:textColor="#2DDA93"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't Have Account? "
+            android:textColor="#495566"
+            android:textSize="16dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" SignUp"
+            android:textColor="#2DDA93"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 
     <CheckBox
         android:id="@+id/remember"

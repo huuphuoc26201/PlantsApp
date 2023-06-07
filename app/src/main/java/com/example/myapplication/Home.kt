@@ -1,24 +1,30 @@
 package com.example.myapplication
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication.Adapter.articlesAdapter
 import com.example.myapplication.Adapter.phoToAdapter
 import com.example.myapplication.Adapter.plantTypeAdapter
-import com.example.myapplication.model.articlesData
 import com.example.myapplication.model.phoToData
 import com.example.myapplication.model.plantTypeData
 import com.example.myapplication.model.userData
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
@@ -26,11 +32,13 @@ import com.google.firebase.storage.ktx.storage
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class Home : AppCompatActivity() {
     private lateinit var dbref : DatabaseReference
+    lateinit var image:String
+    lateinit var name:String
+    lateinit var search:SearchView
     private lateinit var userRecyclerview : RecyclerView
     private lateinit var Recyclerview1 : RecyclerView
     private lateinit var arrayList : ArrayList<plantTypeData>
@@ -43,10 +51,45 @@ class Home : AppCompatActivity() {
         val specie= findViewById<Button>(R.id.specise)
         val btnprofile=findViewById<CircleImageView>(R.id.profile_image)
         val addingnew=findViewById<Button>(R.id.adding_new)
+        search=findViewById(R.id.searchView)
+        // trong hàm onCreate() của Activity đầu tiên
+        search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Tạo intent mới để chuyển sang Activity mới
+                val intent = Intent(this@Home, listSpecies::class.java)
+
+                // Đính kèm dữ liệu vào intent
+                intent.putExtra("SEARCH_QUERY", query)
+
+                // Chuyển sang Activity mới
+                startActivity(intent)
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Không làm gì trong trường hợp này
+                return true
+            }
+        })
+
 
         addingnew.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, 1)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            }else{
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, 1)
+            }
+        }
+        val fab=findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            }else{
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, 1)
+            }
         }
 
 
@@ -86,6 +129,8 @@ class Home : AppCompatActivity() {
         userRecyclerview.setHasFixedSize(true)
         arrayList = ArrayList()
         arrayList = arrayListOf<plantTypeData>()
+        val myadapter=plantTypeAdapter(this@Home, arrayList)
+        userRecyclerview.adapter = myadapter
         getUserData()
 
         Recyclerview1 = findViewById(R.id.RecyclerView1)
@@ -93,6 +138,8 @@ class Home : AppCompatActivity() {
         Recyclerview1.setHasFixedSize(true)
         arrayList1 = ArrayList()
         arrayList1 = arrayListOf<phoToData>()
+        val myadapter1=phoToAdapter(this@Home, arrayList1)
+        Recyclerview1.adapter = myadapter1
         getUserData1()
     }
 
@@ -111,7 +158,6 @@ class Home : AppCompatActivity() {
                         arrayList.add(planttypedata!!)
 
                     }
-
                     userRecyclerview.adapter = plantTypeAdapter(this@Home, arrayList)
 
 
@@ -176,7 +222,7 @@ class Home : AppCompatActivity() {
                     val user = ds.getValue(userData::class.java)
                     if (user != null) {
                         tvname.text = "Hello "+user?.fullName+","
-                        Glide.with(this@Home).load(user?.imageAvt).error(R.drawable.img_2)
+                        Glide.with(this@Home).load(user?.imageAvt.toString()).error(R.drawable.avt)
                             .into(image)
                     }
                 }
@@ -185,6 +231,7 @@ class Home : AppCompatActivity() {
             }
         })
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -193,27 +240,84 @@ class Home : AppCompatActivity() {
 
             // Tạo reference tới file ảnh trên FirebaseStorage
             val storageRef = Firebase.storage.reference
-            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+            val users = FirebaseAuth.getInstance().currentUser ?: return
+            val eemail = users.email
+            val database = FirebaseDatabase.getInstance()
+            database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (ds in dataSnapshot.children) {
+                            val user = ds.getValue(userData::class.java)
+                            if (user != null) {
+                                name= user?.key.toString()
+                                val imagesRef = storageRef.child("PostArticle").child(name).child("${UUID.randomUUID()}.jpg")
+                                // Chuyển đổi bitmap thành byte array để upload lên FirebaseStorage
+                                val baos = ByteArrayOutputStream()
+                                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                                val data = baos.toByteArray()
 
-            // Chuyển đổi bitmap thành byte array để upload lên FirebaseStorage
-            val baos = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-            val data = baos.toByteArray()
+                                // Upload ảnh lên FirebaseStorage
+                                val uploadTask = imagesRef.putBytes(data)
 
-            // Upload ảnh lên FirebaseStorage
-            val uploadTask = imagesRef.putBytes(data)
+                                // Lắng nghe sự kiện hoàn thành upload
+                                if (uploadTask != null) {
+                                    uploadTask.continueWithTask { task ->
+                                        if (!task.isSuccessful) {
+                                            task.exception?.let { throw it }
+                                        }
 
-            // Lắng nghe sự kiện hoàn thành upload
-            uploadTask.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    startActivity(Intent(this, addingNew::class.java))
-                    finish()
-                } else {
-                    startActivity(Intent(this, Home::class.java))
-                    finish()
+                                        imagesRef.downloadUrl
+                                    }.addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            // Lưu đường dẫn của hình ảnh vào database Realtime Database
+                                            val downloadUri = task.result
+                                            val intent = Intent(this@Home, addingNew::class.java)
+                                            intent.putExtra("message", downloadUri.toString())
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+                                            // Xử lý khi không thể tải lên hình ảnh
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+                }
+            })
+
+
+
+        }
+    }
+
+    override fun onBackPressed() {
+        AlertDialog.Builder(this@Home).apply {
+            setTitle("Exit the app")
+            setMessage("Are you sure you want to exit the application?")
+            setPositiveButton("Yes") { _, _ ->
+                finish()
+            }
+            setNegativeButton("No", null)
+        }.show()
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted
+            } else {
+                // Permission has been denied
             }
         }
     }
+
+
 
 }

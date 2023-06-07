@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Adapter.favoriteArticlesAdapter
 import com.example.myapplication.R
 import com.example.myapplication.model.articlesData
+import com.example.myapplication.model.userData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import java.util.*
 
@@ -26,6 +28,7 @@ private const val ARG_PARAM2 = "param2"
 class ArticlesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var myRef: DatabaseReference
+    lateinit var ekey:String
     private lateinit var userArrayList : ArrayList<articlesData>
     private var param1: String? = null
     private var param2: String? = null
@@ -42,46 +45,68 @@ class ArticlesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_species, container, false)
+        val view = inflater.inflate(R.layout.fragment_articles, container, false)
         recyclerView = view.findViewById(R.id.RecyclerView)
         recyclerView.setHasFixedSize(true)
         userArrayList = ArrayList()
         userArrayList = arrayListOf<articlesData>()
-        recyclerView.layoutManager = LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        val myadapter=  favoriteArticlesAdapter(ArticlesFragment, userArrayList)
+        recyclerView.adapter = myadapter
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val database = FirebaseDatabase.getInstance()
-        myRef = database.getReference("Favorite Articles")
     }
 
     override fun onStart() {
         super.onStart()
-        myRef.addValueEventListener(object : ValueEventListener {
+        val users = FirebaseAuth.getInstance().currentUser ?: return
+        val database = FirebaseDatabase.getInstance()
+        val eemail = users.email
+        database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        val user = ds.getValue(userData::class.java)
+                        if (user != null) {
+                            ekey= user?.key.toString()
+                            myRef = FirebaseDatabase.getInstance().getReference("Favorite").child(ekey).child("FavoriteArticles")
+                            myRef.addValueEventListener(object : ValueEventListener {
 
-            override fun onDataChange(snapshot: DataSnapshot) {
+                                override fun onDataChange(snapshot: DataSnapshot) {
 
-                if (snapshot.exists()){
+                                    if (snapshot.exists()){
 
-                    for (userSnapshot in snapshot.children){
-                        val speciesdata = userSnapshot.getValue(articlesData::class.java)
-                                userArrayList.add(speciesdata!!)
+                                        for (userSnapshot in snapshot.children){
+                                            val speciesdata = userSnapshot.getValue(articlesData::class.java)
+                                            userArrayList.add(speciesdata!!)
+                                        }
+
+                                    }
+
+                                    recyclerView.adapter = favoriteArticlesAdapter(ArticlesFragment, userArrayList)
+
+
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
                         }
-
                     }
-
-                recyclerView.adapter = favoriteArticlesAdapter(ArticlesFragment, userArrayList)
-
-
                 }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+            }
         })
+
 
     }
 

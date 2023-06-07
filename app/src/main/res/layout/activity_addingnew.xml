@@ -1,92 +1,404 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#33C8C1C1"
     android:layout_height="match_parent"
-    tools:context=".Profile">
-
+    tools:context=".addingNew">
+    <ScrollView
+        android:id="@+id/ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/CoordinatorLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <RelativeLayout
-                android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="271dp"
-                android:background="@drawable/img_br"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
+                android:layout_height="261dp">
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="261dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bradding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <ImageView
                     android:id="@+id/pev"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="60dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="23dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/ic_baseline_arrow_back_ios_24"
+                    android:contentDescription="@string/app_name"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:onClick="prev"
-                    android:background="@drawable/ic_baseline_arrow_back_ios_24"
                     android:textColor="@color/white"
                     android:textSize="23dp"
                     android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="295dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="200dp"
-                    android:layout_marginLeft="133dp"
+
+                <ImageView
+                    android:id="@+id/add"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="23dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#68FFFFFF"
+                    android:src="@drawable/ic_add"
+                    android:contentDescription="@string/app_name"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Adding New"
-                    android:textColor="#26FFFFFF"
-                    android:textSize="50dp"
+                    android:gravity="center"
+                    android:onClick="prev"
+                    android:textColor="@color/white"
+                    android:textSize="23dp"
                     android:textStyle="bold" />
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="23dp"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="Adding New"
+                android:layout_marginTop="10dp"
+                android:textColor="#36455A"
+                android:textSize="27dp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnsp"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_margin="15dp"
+                    android:text="SPECIES"
+                    android:textSize="17dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/white"
+                    android:background="@drawable/custom_button_5" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnar"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_margin="15dp"
+                    android:text="ARTICLES"
+                    android:textColor="@color/white"
+                    android:textSize="17dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:background="@drawable/custom_button_8" />
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/linear_articles"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:orientation="vertical"
+                    android:background="@color/white">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailLayout"
+                        style="@style/LoginTextInputOuterFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name"
+                            style="@style/LoginTextInputInnerFieldStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name"
+                            android:inputType="text"
+                            android:textSize="17dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/fullnamelLayout3"
+                        style="@style/LoginTextInputOuterFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/passwordLayout">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/title"
+                            style="@style/LoginTextInputInnerFieldStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Title"
+                            android:lines="2"
+                            android:overScrollMode="always"
+                            android:scrollbars="vertical"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollHorizontally="false"
+                            android:inputType="textMultiLine"
+                            android:textSize="17dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/fullnamelLayout"
+                        style="@style/LoginTextInputOuterFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        app:layout_constraintTop_toBottomOf="@+id/passwordLayout">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/description"
+                            style="@style/LoginTextInputInnerFieldStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Description"
+                            android:lines="5"
+                            android:overScrollMode="always"
+                            android:scrollbars="vertical"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollHorizontally="false"
+                            android:inputType="textMultiLine"
+                            android:textSize="17dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnarticles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/custom_button_5"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Upload Articles"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linear_species"
+                    android:layout_width="match_parent"
+                    android:layout_height="740dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/LoginTextInputOuterFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/namesp"
+                            style="@style/LoginTextInputInnerFieldStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Name Species"
+                            android:inputType="text"
+                            android:textSize="17dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <TextView
+                        android:id="@+id/title1"
+                        android:layout_width="match_parent"
+                        android:layout_height="59dp"
+                        android:text="Plants Types"
+                        android:inputType="text"
+                        android:textSize="17dp"
+                        android:gravity="center|left"
+                        android:padding="15dp"
+                        android:textColor="#DC514D4D"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        android:background="@drawable/radio_group_border"/>
+
+                    <RadioGroup
+                        android:id="@+id/subject_radio_group"
+                        android:background="@drawable/round_border"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical"
+                        android:layout_marginStart="20dp">
+                        <RadioButton
+                            android:id="@+id/radio1"
+                            android:layout_marginLeft="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cacti and Succulents"/>
+
+                        <RadioButton
+                            android:id="@+id/radio2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="Flowers and Ornamentals"/>
+
+                        <RadioButton
+                            android:id="@+id/radio3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="Fruit-bearing Plants"/>
+                        <RadioButton
+                            android:id="@+id/radio4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="Herbs and Spices"/>
+                        <RadioButton
+                            android:id="@+id/radio5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="-5dp"
+                            android:text="Trees"/>
+
+                    </RadioGroup>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="23dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="Evaluate"
+                        android:textColor="#36455A"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="-30dp"
+                        android:contentDescription="@string/app_name"
+                        android:numStars="5"
+                        android:progressTint="@color/yellow"
+                        android:rating="3.5"
+                        android:scaleX="0.6"
+                        android:scaleY="0.6"
+                        app:layout_constraintStart_toStartOf="@+id/textView17"
+                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                    <TextView
+                        android:id="@+id/evaluate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-32dp"
+                        android:layout_marginLeft="180dp"
+                        android:text="3.5"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/LoginTextInputOuterFieldStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="20dp"
+                        app:boxStrokeColor="#2DDA93"
+                        app:hintTextColor="#2DDA93"
+                        app:layout_constraintTop_toBottomOf="@+id/passwordLayout">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/descriptionsp"
+                            style="@style/LoginTextInputInnerFieldStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Description"
+                            android:lines="5"
+                            android:overScrollMode="always"
+                            android:scrollbars="vertical"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollHorizontally="false"
+                            android:inputType="textMultiLine"
+                            android:textSize="17dp" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnspecise"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/custom_button_5"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Upload Species"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
             </RelativeLayout>
 
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:layout_marginTop="15dp"
-        android:text="Adding New"
-        android:textColor="#36455A"
-        android:textSize="27dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/RecyclerView"
-        android:layout_width="wrap_content"
-        android:layout_height="320dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv"
-        tools:listitem="@layout/item_image" />
+    </ScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/CoordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="85dp"
-        android:layout_above="@+id/RecyclerView"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="#33C8C1C1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_alignParentBottom="true">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
@@ -121,5 +433,4 @@
             app:tint="@color/white" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

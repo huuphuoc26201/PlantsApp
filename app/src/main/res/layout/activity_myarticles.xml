@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".myArticles">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/img_br"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:id="@+id/pev"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/ic_baseline_arrow_back_ios_24"
+            android:contentDescription="@string/app_name"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:onClick="prev"
+            android:textColor="@color/white"
+            android:textSize="23dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pev"
+            android:layout_marginLeft="23dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="My Article"
+            android:textColor="@color/white"
+            android:textSize="27dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/add"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/tv"
+            android:layout_alignBottom="@+id/tv"
+            android:layout_toEndOf="@+id/tv"
+            android:layout_marginLeft="18dp"
+            android:contentDescription="@string/app_name"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:onClick="addingnew"
+            android:src="@drawable/ic_baseline_add_to_photos_24"
+            android:textColor="@color/white"
+            android:textSize="23dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/line1"
+        android:layout_marginTop="-3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayout"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnsp"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_5"
+            android:fontFamily="sans-serif-medium"
+            android:text="SPECIES"
+            android:textColor="@color/white"
+            android:textSize="17dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnar"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_8"
+            android:fontFamily="sans-serif-medium"
+            android:text="ARTICLES"
+            android:textColor="@color/white"
+            android:textSize="17dp" />
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewArticles"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/CoordinatorLayout"
+        android:layout_below="@+id/line1"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-7dp"
+        android:background="@color/white"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/dong_articles" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewSpecies"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/CoordinatorLayout"
+        android:layout_below="@+id/line1"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/dong_species" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/CoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="0dp">
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottomNavigationView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/transparent_background"
+                app:itemIconTint="@drawable/bottom_nav_item_bg"
+                app:itemTextColor="@drawable/bottom_nav_item_bg"
+                app:menu="@menu/bottom_nav_menu"
+
+                />
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="#48A2F5"
+            app:layout_anchor="@id/bottomAppBar"
+            app:tint="@color/white" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

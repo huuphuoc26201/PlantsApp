@@ -41,12 +41,12 @@ class forGotPassWord : AppCompatActivity() {
                 sEmail = email.text.toString().trim()
                 auth.sendPasswordResetEmail(sEmail)
                     .addOnSuccessListener {
-                        builder.setTitle("Thông báo")
-                            .setMessage("Chúng tôi đã hỗ trợ bạn reset mật khẩu. Vui lòng kiểm tra lại email của bạn.")
+                        builder.setTitle("Notification")
+                            .setMessage("We've helped you reset your password. Please check your email again.")
                             .setCancelable(true) // dialog box in cancellable
                             // set positive button
                             //take two parameters dialogInterface and an int
-                            .setPositiveButton("Xác nhận"){dialogInterface,it ->
+                            .setPositiveButton("Confirm"){dialogInterface,it ->
                                 val intent = Intent(this, logIn::class.java)
                                 startActivity(intent)
                                 finish() // close the app when yes clicked
@@ -56,7 +56,7 @@ class forGotPassWord : AppCompatActivity() {
                     }
                     .addOnFailureListener {
                         Toast.makeText(
-                            this, "Email chưa được đăng ký tài khoản!",
+                            this, "Email not registered account!",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -67,15 +67,15 @@ class forGotPassWord : AppCompatActivity() {
         private fun validateemail(): Boolean {
             val mail= email.text.toString().trim()
             return if (mail.isEmpty()) {
-                email.setError("Email không được để trống")
+                email.error = "Email can not be blank"
                 false
             }else if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
-                email.setError("Địa chỉ email không hợp lệ!")
+                email.error = "Email address is not valid!"
                 false
             }
             else
             {
-                email.setError(null)
+                email.error = null
                 true
             }
         }

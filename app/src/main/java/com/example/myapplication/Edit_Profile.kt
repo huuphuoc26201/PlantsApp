@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.util.Patterns
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -45,26 +47,26 @@ class Edit_Profile : AppCompatActivity() {
         editname=findViewById(R.id.name)
         save=findViewById(R.id.save)
         profile()
-
-        save.setOnClickListener {
-            firebaseUser()
-            builder.setTitle("Thông báo")
-                .setMessage("Bạn có chắc chắn muốn thay đổi?")
-                .setCancelable(true) // dialog box in cancellable
-                // set positive button
-                //take two parameters dialogInterface and an int
-                .setPositiveButton("Có"){dialogInterface,it ->
-                    profile()
-                    val intent = Intent(this, Profile::class.java)
-                    startActivity(intent)
-                    finish()
+        val users = FirebaseAuth.getInstance().currentUser ?: return
+        val eemail = users.email
+        database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (ds in dataSnapshot.children) {
+                        val user = ds.getValue(userData::class.java)
+                        if (user != null) {
+                            name=user?.key.toString()
+                            avt=user?.imageAvt.toString()
+                        }
+                    }
                 }
-            builder.setNegativeButton("Không") { dialog, which ->
-                dialog.cancel()
             }
-                // show the builder
-                .show()
-        }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+            }
+        })
         avatar.setOnClickListener {
             val intent = Intent()
                 .setType("image/*")
@@ -72,15 +74,70 @@ class Edit_Profile : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
         }
 
+        save.setOnClickListener {
+            if (!validateemail()or !validateName()) {
+            } else {
+                builder.setTitle("Notification")
+                    .setMessage("Are you sure you want to change??")
+                    .setCancelable(true) // dialog box in cancellable
+                    // set positive button
+                    //take two parameters dialogInterface and an int
+                    .setPositiveButton("Yes") { dialogInterface, it ->
+                        firebaseUser()
+                        val intent = Intent(this, Profile::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                builder.setNegativeButton("No") { dialog, which ->
+                    val myRef = database.getReference("Users").child(name)
+                    myRef.child("imageAvt").setValue(avt)
+                    Glide.with(this@Edit_Profile).load(avt).error(R.drawable.avt)
+                        .into(avatar)
+                    dialog.cancel()
+                }
+                    // show the builder
+                    .show()
+            }
+        }
 
 
+
+    }
+
+
+    private fun validateemail(): Boolean {
+        val mail= editemail.text.toString().trim()
+        return if (mail.isEmpty()) {
+            editemail.setError("Email can not be blank!")
+            false
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
+            editemail.setError("Email address is not valid!")
+            false
+        }
+        else
+        {
+            editemail.setError(null)
+            true
+        }
+    }
+
+    private fun validateName(): Boolean {
+        val sName= editname.text.toString().trim()
+        return if (sName.isEmpty()) {
+            editname.setError("Name can not be blank")
+            false
+        }
+        else
+        {
+            editname.setError(null)
+            true
+        }
     }
 
     private fun firebaseUser() {
         sEmail = editemail.text.toString().trim()
         sfullName = editname.text.toString().trim()
         val users = FirebaseAuth.getInstance().currentUser ?: return
-        val ename = users.displayName
         val eemail = users.email
         database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -89,45 +146,11 @@ class Edit_Profile : AppCompatActivity() {
                         val user = ds.getValue(userData::class.java)
                         if (user != null) {
                             name= user?.key.toString()
-                            val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
-                            databaseRef.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val imageUrl = snapshot.children.lastOrNull()?.value as? String
-
-                                    val User=userData(sfullName,sEmail,imageUrl,name)
-                                    val ref = database.getReference("Users")
-                                    val key = ref.push().key
-                                    key?.let {
-                                        val userRef = ref.child(name)
-                                        userRef.setValue(User)
-                                    }
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    // Xử lý khi không thể truy xuất database
-                                }
-                            })
+                            val database = FirebaseDatabase.getInstance()
+                            val myRef = database.getReference("Users").child(name)
+                            myRef.child("fullName").setValue(sfullName)
                         }
                     }
-                } else {
-                    // Hiển thị thông báo lỗi
-                    val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
-                    databaseRef.addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val imageUrl = snapshot.children.lastOrNull()?.value as? String
-
-                            val User=userData(sfullName,sEmail,imageUrl,ename.toString())
-                            val ref = database.getReference("Users")
-                            val key = ref.push().key
-                            key?.let {
-                                val userRef = ref.child(ename.toString())
-                                userRef.setValue(User)
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            // Xử lý khi không thể truy xuất database
-                        }
-                    })
                 }
             }
 
@@ -145,7 +168,7 @@ class Edit_Profile : AppCompatActivity() {
         val photoUrl: Uri? = users.photoUrl
         editname.setText(ename)
         editemail.setText(eemail)
-        Glide.with(this@Edit_Profile).load(photoUrl).error(R.drawable.img_2)
+        Glide.with(this@Edit_Profile).load(photoUrl).error(R.drawable.avt)
             .into(avatar)
         val userRef = FirebaseDatabase.getInstance().getReference("Users")
             .orderByChild("email")
@@ -157,7 +180,7 @@ class Edit_Profile : AppCompatActivity() {
                     if (user != null) {
                         editname.setText(user?.fullName)
                         editemail.setText(user?.email)
-                        Glide.with(this@Edit_Profile).load(user?.imageAvt).error(R.drawable.img_2)
+                        Glide.with(this@Edit_Profile).load(user?.imageAvt).error(R.drawable.avt)
                             .into(avatar)
                     }
                 }
@@ -170,36 +193,64 @@ class Edit_Profile : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        val users = FirebaseAuth.getInstance().currentUser ?: return
         if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.data != null) {
             val imageUri = data.data
-
             // Load image to ImageView
             avatar.setImageURI(imageUri)
+            val eemail = users.email
+            database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (ds in dataSnapshot.children) {
+                            val user = ds.getValue(userData::class.java)
+                            if (user != null) {
+                                name= user?.key.toString()
+                                val storageRef = FirebaseStorage.getInstance().reference.child("imagesAvt").child(name).child("${UUID.randomUUID()}.jpg")
+                                val uploadTask = imageUri?.let { storageRef.putFile(it) }
 
-            val storageRef = FirebaseStorage.getInstance().reference.child("imagesAvt/${UUID.randomUUID()}")
-            val uploadTask = imageUri?.let { storageRef.putFile(it) }
+                                uploadTask?.continueWithTask { task ->
+                                    if (!task.isSuccessful) {
+                                        task.exception?.let { throw it }
+                                    }
 
-            if (uploadTask != null) {
-                uploadTask.continueWithTask { task ->
-                    if (!task.isSuccessful) {
-                        task.exception?.let { throw it }
-                    }
-
-                    storageRef.downloadUrl
-                }.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val downloadUri = task.result
-
-                        // Lưu đường dẫn của hình ảnh vào database Realtime Database
-                        val databaseRef = FirebaseDatabase.getInstance().reference.child("imagesAvt")
-                        databaseRef.push().setValue(downloadUri.toString())
-                    } else {
-                        // Xử lý khi không thể tải lên hình ảnh
+                                    storageRef.downloadUrl
+                                }?.addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        // Lưu đường dẫn của hình ảnh vào database Realtime Database
+                                        val downloadUri = task.result
+                                        Glide.with(this@Edit_Profile).load(downloadUri.toString()).error(R.drawable.avt)
+                                            .into(avatar)
+                                        val database = FirebaseDatabase.getInstance()
+                                        val myRef = database.getReference("Users").child(name)
+                                        myRef.child("imageAvt").setValue(downloadUri.toString())
+                                    } else {
+                                        // Xử lý khi không thể tải lên hình ảnh
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+                }
+            })
+
         }
     }
 
 
+    fun changepassword(view: View?){
+        val intent = Intent(this, changePasswword::class.java)
+        startActivity(intent)
+        finish()
+    }
+    fun prev(view: View?){
+        val intent = Intent(this, Profile::class.java)
+        startActivity(intent)
+        finish()
+    }
 }

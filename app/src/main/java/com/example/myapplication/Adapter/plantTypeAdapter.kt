@@ -38,7 +38,7 @@ class plantTypeAdapter(userList1: Home, private val userList: ArrayList<plantTyp
 
 
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val intent = Intent(holder.itemView.context, detailsArticles::class.java)
+            val intent = Intent(holder.itemView.context, plantTypes::class.java)
             intent.putExtra("imageUrl", currentitem.imageUrl)
             intent.putExtra("Number", currentitem.Number)
             intent.putExtra("Plants", currentitem.Plants)

@@ -35,14 +35,14 @@ class phoToAdapter(userList1: Home, private val userList: ArrayList<phoToData>) 
         holder.number.text=currentitem.Characteristic
 
 
-        holder.itemView.setOnClickListener(View.OnClickListener {
-            val intent = Intent(holder.itemView.context, detailsArticles::class.java)
-            intent.putExtra("imageUrl", currentitem.imageUrl)
-            intent.putExtra("Characteristic", currentitem.Characteristic)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            holder.itemView.context.startActivity(intent)
+      //  holder.itemView.setOnClickListener(View.OnClickListener {
+            //val intent = Intent(holder.itemView.context, detailsArticles::class.java)
+            //intent.putExtra("imageUrl", currentitem.imageUrl)
+            //.putExtra("Characteristic", currentitem.Characteristic)
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+           // holder.itemView.context.startActivity(intent)
 
-        })
+     //   })
 
     }
 
