@@ -43,10 +43,11 @@ class logIn : AppCompatActivity() {
     private lateinit var password: EditText
     private lateinit var auth: FirebaseAuth
     private lateinit var client: GoogleSignInClient
+    private lateinit var database: FirebaseDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
-
+        database = FirebaseDatabase.getInstance()
         email= findViewById(R.id.email)
         password= findViewById(R.id.password)
         val login=findViewById<Button>(R.id.signipbtn)
@@ -106,6 +107,7 @@ class logIn : AppCompatActivity() {
         logInGG.setOnClickListener {
             val intent = client.signInIntent
             startActivityForResult(intent,10001)
+
         }
     }
 
@@ -223,13 +225,19 @@ class logIn : AppCompatActivity() {
 
                             }
                         })
-
                         val intent  = Intent(this,Home::class.java)
                         Toast.makeText(this,"Sign in with Google successfully!",Toast.LENGTH_SHORT).show()
                         startActivity(intent)
 
                     }else{
-                        Toast.makeText(this,task.exception?.message,Toast.LENGTH_SHORT).show()
+                        val exception = task.exception
+                        if(exception is FirebaseAuthUserCollisionException){
+                            // Email đã được sử dụng trước đó
+                            Toast.makeText(this,"This email is already registered",Toast.LENGTH_SHORT).show()
+                        }else{
+                            // Các lỗi khác
+                            Toast.makeText(this,exception?.message,Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                 }

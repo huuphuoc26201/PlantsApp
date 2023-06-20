@@ -297,7 +297,7 @@ class addingNew : AppCompatActivity() {
                         edt1 = name.text.toString().trim()
                         edt2 = title.text.toString().trim()
                         edt3 = description.text.toString().trim()
-                        val randomString = (1..4)
+                        val randomString = (1..5)
                             .map { (('a'..'z') + ('A'..'Z') + ('0'..'9')).random() }
                             .joinToString("")
                         keyrandom= "mypost$randomString"

@@ -93,7 +93,7 @@ class signUp : AppCompatActivity() {
         sEmail = email.text.toString().trim()
         sPassword = password.text.toString().trim()
         sfullName=name.text.toString().trim()
-        val randomString = (1..4)
+        val randomString = (1..5)
             .map { (('a'..'z') + ('A'..'Z') + ('0'..'9')).random() }
             .joinToString("")
         key1= "NHP$randomString"

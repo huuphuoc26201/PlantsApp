@@ -1,35 +1,64 @@
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cayxanh"
+    android:background="#A4E0E0E0"
     tools:context=".splashScreen">
-    <TextView android:id="@+id/textView"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView5"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/iconplant"
+        android:layout_marginTop="-90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
+        android:layout_alignParentTop="true"
+        android:fontFamily="serif"
         android:text="Plants App"
         android:textAlignment="center"
-        android:textSize="60sp"
-        android:layout_marginTop="35dp"
-        android:textColor="@color/white"
+        android:textColor="#4CAF50"
+        android:textSize="45sp"
+        android:layout_marginTop="-5dp"
+        android:textStyle="bold"
         android:transitionName="logo_text"
-        android:layout_alignParentTop="true"/>
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:indeterminateTint="#4CAF50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="460dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Apps to look up information about plants"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#4CAF50"
         android:textSize="17sp"
+        android:layout_marginBottom="15dp"
         android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"/>
-</RelativeLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,7 +31,7 @@ class splashScreen : AppCompatActivity() {
             }else{
                 GoToDashboard()
             }
-        },4500)
+        },3000)
     }
 
     private fun GoToDashboard() {
