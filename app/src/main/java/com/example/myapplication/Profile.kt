@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,10 +20,14 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.myapplication.Adapter.MyFragmentAdapter
 import com.example.myapplication.model.userData
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -44,6 +49,13 @@ class Profile : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
 
         profile()
+        val name = intent.getStringExtra("name").toString()
+        if(name!=null){
+            val fullname=findViewById<TextView>(R.id.tvname)
+            fullname.text=name
+        }
+
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.person
         builder = AlertDialog.Builder(this)
@@ -121,17 +133,23 @@ class Profile : AppCompatActivity() {
     private fun logout() {
         builder.setTitle("Log out")
             .setMessage("Are you sure you want to sign out?")
-            .setCancelable(true) // dialog box in cancellable
+            .setCancelable(true)
+            // dialog box in cancellable
             // set positive button
             //take two parameters dialogInterface and an int
-            .setPositiveButton("Yes"){dialogInterface,it ->
+            .setPositiveButton("Yes"){ _, _ ->
+                val users = FirebaseAuth.getInstance().currentUser ?: return@setPositiveButton
+                // Check if the user is using a Google account
+                if (users.providerData.any { it.providerId == GoogleAuthProvider.PROVIDER_ID }) {
+                    signOut()
+                   return@setPositiveButton
+                }
                 FirebaseAuth.getInstance().signOut()
-
                 val intent = Intent(this, logIn::class.java)
                 startActivity(intent)
                 finish()
             }
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { dialog, _ ->
             dialog.cancel()
         }
             // show the builder
@@ -143,10 +161,8 @@ class Profile : AppCompatActivity() {
         val tvname=findViewById<TextView>(R.id.tvname)
         val tvemail=findViewById<TextView>(R.id.tvemail)
         val users = FirebaseAuth.getInstance().currentUser ?: return
-        val name = users.displayName
         val eemail = users.email
         val photoUrl: Uri? = users.photoUrl
-        tvname.text = name
         tvemail.text = eemail
         Glide.with(this@Profile).load(photoUrl).error(R.drawable.avt)
             .into(image)
@@ -241,6 +257,39 @@ class Profile : AppCompatActivity() {
         }
     }
 
+    // Phương thức để đăng xuất
+    private fun signOut() {
+        var mGoogleApiClient: GoogleApiClient? = null
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        mGoogleApiClient = GoogleApiClient.Builder(this)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+            .build()
+
+        mGoogleApiClient?.connect()
+
+        mGoogleApiClient?.registerConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(bundle: Bundle?) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { status ->
+                    if (status.isSuccess) {
+                        // Đăng xuất thành công
+                        Logout()
+                    }
+                }
+            }
+
+            override fun onConnectionSuspended(i: Int) {}
+        })
+    }
+
+    private fun Logout() {
+        val intent = Intent(this, logIn::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     fun changepassword(view: View?){
         startActivity(Intent(this, changePasswword::class.java))
         finish()
@@ -255,3 +304,4 @@ class Profile : AppCompatActivity() {
     }
 
 }
+

@@ -42,7 +42,6 @@ class followChannel : AppCompatActivity() {
     lateinit var text:String
     lateinit var name:String
     lateinit var ekey:String
-    var back=" "
     private lateinit var builder : AlertDialog.Builder
     lateinit var follow:TextView
     lateinit var unfollow:TextView
@@ -363,13 +362,7 @@ class followChannel : AppCompatActivity() {
         }
     }
     fun prev(view: View?){
-        back = intent.getStringExtra("prev").toString()
-        if(back=="prev"){
-            startActivity(Intent(this, detailsArticles::class.java))
-            finish()
-        }else{
             startActivity(Intent(this, Follow::class.java))
             finish()
-        }
     }
 }

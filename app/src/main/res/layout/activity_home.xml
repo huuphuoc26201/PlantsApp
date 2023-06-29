@@ -199,6 +199,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/wave"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent">
 
 
@@ -212,6 +213,7 @@
                 android:background="@drawable/transparent_background"
                 app:itemIconTint="@drawable/bottom_nav_item_bg"
                 app:itemTextColor="@drawable/bottom_nav_item_bg"
+                app:layout_constraintVertical_bias="1.0"
                 app:menu="@menu/bottom_nav_menu"
 
                 />

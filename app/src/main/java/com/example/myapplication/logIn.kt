@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.ProgressDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -44,6 +45,8 @@ class logIn : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var client: GoogleSignInClient
     private lateinit var database: FirebaseDatabase
+    private  val RC_SIGN_IN = 9001
+    private  val TAG = "GoogleSignInActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
@@ -98,16 +101,16 @@ class logIn : AppCompatActivity() {
             val intent=Intent(this,forGotPassWord::class.java)
             startActivity(intent)
         }
-        val  options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
-            // dont worry about this error
             .requestEmail()
             .build()
-        client = GoogleSignIn.getClient(this,options)
-        logInGG.setOnClickListener {
-            val intent = client.signInIntent
-            startActivityForResult(intent,10001)
 
+        client = GoogleSignIn.getClient(this,options)
+
+        logInGG.setOnClickListener {
+            val signInIntent = client.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
         }
     }
 
@@ -126,7 +129,7 @@ class logIn : AppCompatActivity() {
         progressDialog.setMessage("Please wait...")
         progressDialog.setCancelable(false)
         progressDialog.show()
-        Handler().postDelayed({progressDialog.dismiss()},4000)
+        Handler().postDelayed({progressDialog.dismiss()},2000)
         auth.signInWithEmailAndPassword(sEmail, sPassword)
             .addOnCompleteListener(this) { task ->
 
@@ -187,62 +190,71 @@ class logIn : AppCompatActivity() {
             true
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==10001){
+
+        if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            val account = task.getResult(ApiException::class.java)
-            val credential = GoogleAuthProvider.getCredential(account.idToken,null)
-            FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnCompleteListener{task->
-                    if(task.isSuccessful){
-                        val userName = account?.displayName
-                        val userEmail = account?.email
-                        val userPhotoUrl = account?.photoUrl.toString()
-
-                        // Tạo User object và đưa thông tin lên Realtime Database
-                        val userId = FirebaseAuth.getInstance().currentUser?.uid
-                        val database= FirebaseDatabase.getInstance()
-                        database.getReference("Users").orderByChild("key").equalTo(userId).addListenerForSingleValueEvent(object :
-                            ValueEventListener {
-                            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for (ds in dataSnapshot.children) {
-                                        val user = ds.getValue(userData::class.java)
-                                        if (user != null) {
-                                        }
-                                    }
-                                } else {
-                                    val user = userData(userName, userEmail, userPhotoUrl, userId)
-                                    FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(userId.toString())
-                                        .setValue(user)
-                                }
-                            }
-
-                            override fun onCancelled(databaseError: DatabaseError) {
-                                // Xảy ra lỗi trong quá trình đọc dữ liệu
-
-                            }
-                        })
-                        val intent  = Intent(this,Home::class.java)
-                        Toast.makeText(this,"Sign in with Google successfully!",Toast.LENGTH_SHORT).show()
-                        startActivity(intent)
-
-                    }else{
-                        val exception = task.exception
-                        if(exception is FirebaseAuthUserCollisionException){
-                            // Email đã được sử dụng trước đó
-                            Toast.makeText(this,"This email is already registered",Toast.LENGTH_SHORT).show()
-                        }else{
-                            // Các lỗi khác
-                            Toast.makeText(this,exception?.message,Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                }
+            try {
+                // Sign in succeeded, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Sign in failed, handle error
+                Log.w(TAG, "Google sign in failed", e)
+                Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
+                    val userName = user?.displayName
+                    val userEmail = user?.email
+                    val userPhotoUrl = user?.photoUrl.toString()
+
+                    // Tạo User object và đưa thông tin lên Realtime Database
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    val database= FirebaseDatabase.getInstance()
+                    database.getReference("Users").orderByChild("key").equalTo(userId).addListenerForSingleValueEvent(object :
+                        ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                for (ds in dataSnapshot.children) {
+                                    val user = ds.getValue(userData::class.java)
+                                    if (user != null) {
+                                    }
+                                }
+                            } else {
+                                val user = userData(userName, userEmail, userPhotoUrl, userId)
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(userId.toString())
+                                    .setValue(user)
+                            }
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            // Xảy ra lỗi trong quá trình đọc dữ liệu
+
+                        }
+                    })
+
+                    val intent  = Intent(this,Home::class.java)
+                    Toast.makeText(this,"Sign in with Google successfully!",Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                } else {
+                    Log.w(TAG, "Google sign in failed", task.exception)
+                    Toast.makeText(this, "Google sign in failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+
 
 
 

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.SearchView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
@@ -49,6 +51,19 @@ class articles : AppCompatActivity() {
         val myadapter= articlesAdapter(this@articles, userArrayList)
         userRecyclerview.adapter = myadapter
         getUserData()
+
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false

@@ -13,8 +13,10 @@ import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,6 +32,8 @@ import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import de.hdodenhof.circleimageview.CircleImageView
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -51,7 +55,21 @@ class Home : AppCompatActivity() {
         val specie= findViewById<Button>(R.id.specise)
         val btnprofile=findViewById<CircleImageView>(R.id.profile_image)
         val addingnew=findViewById<Button>(R.id.adding_new)
+
+
         search=findViewById(R.id.searchView)
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
+            }
+        }
         // trong hàm onCreate() của Activity đầu tiên
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -63,7 +81,6 @@ class Home : AppCompatActivity() {
 
                 // Chuyển sang Activity mới
                 startActivity(intent)
-
                 return true
             }
 
@@ -72,6 +89,7 @@ class Home : AppCompatActivity() {
                 return true
             }
         })
+
 
 
         addingnew.setOnClickListener {
@@ -207,10 +225,9 @@ class Home : AppCompatActivity() {
         val image=findViewById<CircleImageView>(R.id.profile_image)
         val tvname=findViewById<TextView>(R.id.tvname)
         val users = FirebaseAuth.getInstance().currentUser ?: return
-        val name = users.displayName
         val eemail = users.email
         val photoUrl: Uri? = users.photoUrl
-        tvname.text = "Hello "+name+","
+
         Glide.with(this@Home).load(photoUrl).error(R.drawable.img_2)
             .into(image)
         val userRef = FirebaseDatabase.getInstance().getReference("Users")
@@ -307,6 +324,8 @@ class Home : AppCompatActivity() {
             setNegativeButton("No", null)
         }.show()
     }
+
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {

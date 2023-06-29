@@ -55,7 +55,7 @@ class signUp : AppCompatActivity() {
                         progressDialog.setMessage("Please wait...")
                         progressDialog.setCancelable(false)
                         progressDialog.show()
-                        Handler().postDelayed({progressDialog.dismiss()},4000)
+                        Handler().postDelayed({progressDialog.dismiss()},3000)
                         if (task.isSuccessful) {
                             auth.currentUser?.sendEmailVerification()
                                 ?.addOnSuccessListener {

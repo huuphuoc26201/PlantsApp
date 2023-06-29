@@ -117,10 +117,10 @@
 
             <TextView
                 android:id="@+id/textView17"
-                android:layout_width="wrap_content"
+                android:layout_width="320dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="Circle Cactus"
+                android:layout_marginTop="20dp"
+                android:text="Circle Cactus tress h"
                 android:textColor="#495566"
                 android:textSize="33dp"
                 android:textStyle="bold"

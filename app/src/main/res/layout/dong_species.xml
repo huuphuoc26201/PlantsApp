@@ -24,11 +24,13 @@
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="wrap_content"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
         android:text="Red Catus"
         android:textSize="17dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textStyle="bold"
         android:textColor="#36455A"
         app:layout_constraintStart_toEndOf="@+id/imageView2"

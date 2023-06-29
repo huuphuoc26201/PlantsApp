@@ -82,13 +82,15 @@ class Edit_Profile : AppCompatActivity() {
                     .setCancelable(true) // dialog box in cancellable
                     // set positive button
                     //take two parameters dialogInterface and an int
-                    .setPositiveButton("Yes") { dialogInterface, it ->
+                    .setPositiveButton("Yes") { _, _ ->
                         firebaseUser()
                         val intent = Intent(this, Profile::class.java)
+                        sfullName = editname.text.toString().trim()
+                        intent.putExtra("name", sfullName)
                         startActivity(intent)
                         finish()
                     }
-                builder.setNegativeButton("No") { dialog, which ->
+                builder.setNegativeButton("No") { dialog, _ ->
                     val myRef = database.getReference("Users").child(name)
                     myRef.child("imageAvt").setValue(avt)
                     Glide.with(this@Edit_Profile).load(avt).error(R.drawable.avt)
@@ -163,10 +165,8 @@ class Edit_Profile : AppCompatActivity() {
 
     private fun profile() {
         val users = FirebaseAuth.getInstance().currentUser ?: return
-        val ename = users.displayName
         val eemail = users.email
         val photoUrl: Uri? = users.photoUrl
-        editname.setText(ename)
         editemail.setText(eemail)
         Glide.with(this@Edit_Profile).load(photoUrl).error(R.drawable.avt)
             .into(avatar)

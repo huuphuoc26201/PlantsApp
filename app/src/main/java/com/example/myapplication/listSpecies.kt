@@ -24,9 +24,11 @@ import kotlin.collections.ArrayList
 import com.example.myapplication.model.listSpeciesData as listSpeciesData1
 import android.Manifest
 import android.content.pm.PackageManager
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.myapplication.Adapter.followChannelAdapter
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 class listSpecies : AppCompatActivity() {
     var prev=" "
@@ -56,6 +58,20 @@ class listSpecies : AppCompatActivity() {
         val myadapter=  listSpeciesAdapter(this@listSpecies, userArrayList)
         userRecyclerview.adapter = myadapter
         getUserData()
+
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
+            }
+        }
+
         val fab=findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {

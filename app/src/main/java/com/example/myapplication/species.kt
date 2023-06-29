@@ -29,13 +29,15 @@ import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.util.*
 import android.Manifest
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 
 class species : AppCompatActivity() {
     private lateinit var dbref : DatabaseReference
     lateinit var name:String
-    //    private lateinit var userRecyclerview : RecyclerView
-    private lateinit var userRecyclerview: IndexFastScrollRecyclerView
+
+    private lateinit var Recyclerview: IndexFastScrollRecyclerView
     private lateinit var userArrayList : ArrayList<speciesData>
     private lateinit var searchView: SearchView
 
@@ -46,15 +48,15 @@ class species : AppCompatActivity() {
         setContentView(R.layout.activity_species)
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.home
-        userRecyclerview = findViewById(R.id.RecyclerView)
+        Recyclerview = findViewById(R.id.RecyclerView)
         searchView = findViewById(R.id.searchView)
-        userRecyclerview.layoutManager = LinearLayoutManager(this)
-        userRecyclerview.setHasFixedSize(true)
+        Recyclerview.layoutManager = LinearLayoutManager(this)
+        Recyclerview.setHasFixedSize(true)
         searchView.clearFocus()
         userArrayList = ArrayList()
         userArrayList = arrayListOf()
         val myadapter=  speciesAdapter(this@species, userArrayList)
-        userRecyclerview.adapter = myadapter
+        Recyclerview.adapter = myadapter
         getUserData()
         initialiseUI()
         val fab=findViewById<FloatingActionButton>(R.id.fab)
@@ -67,6 +69,18 @@ class species : AppCompatActivity() {
             }
         }
 
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
@@ -101,7 +115,6 @@ class species : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 if (snapshot.exists()){
-//                    val dataArray = ArrayList<String>()
 
                     for (userSnapshot in snapshot.children){
                         val speciesData = userSnapshot.getValue(speciesData::class.java)
@@ -109,7 +122,7 @@ class species : AppCompatActivity() {
 
                     }
                     initialiseUI()
-                    userRecyclerview.adapter = speciesAdapter(this@species, userArrayList)
+                    Recyclerview.adapter = speciesAdapter(this@species, userArrayList)
 
                 }
 
@@ -133,16 +146,15 @@ class species : AppCompatActivity() {
                 searchList.add(speciesData)
             }
         }
-//        userRecyclerview.adapter = speciesAdapter(this@species, searchList)
+//        Recyclerview.adapter = speciesAdapter(this@species, searchList)
         val adapter = speciesAdapter(this@species, searchList)
-        userRecyclerview.adapter = adapter
+        Recyclerview.adapter = adapter
     }
     private fun initialiseUI() {
         dbref = FirebaseDatabase.getInstance().getReference("Species")
-        userRecyclerview.apply {
-            userRecyclerview.layoutManager = LinearLayoutManager(this@species)
+        Recyclerview.apply {
+            Recyclerview.layoutManager = LinearLayoutManager(this@species)
             adapter = RecyclerViewAdapter(userArrayList.map { it.species } as ArrayList<String>)
-
 
             setIndexbarMargin(-4F)
             setIndexTextSize(12)
@@ -161,9 +173,10 @@ class species : AppCompatActivity() {
             setIndexBarStrokeColor("#FFFFFFFF")
             setIndexBarHighLightTextVisibility(true)
         }
-        Objects.requireNonNull<RecyclerView.LayoutManager>(userRecyclerview.layoutManager)
+        Objects.requireNonNull<RecyclerView.LayoutManager>(Recyclerview.layoutManager)
             .scrollToPosition(0)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

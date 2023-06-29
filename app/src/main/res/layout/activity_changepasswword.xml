@@ -51,31 +51,6 @@
 
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordLayout1"
-        style="@style/LoginTextInputOuterFieldStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginEnd="23dp"
-        app:boxStrokeColor="#2DDA93"
-        android:layout_marginTop="90dp"
-        app:hintTextColor="#2DDA93"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/mk_old"
-            style="@style/LoginTextInputInnerFieldStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Old password"
-            android:inputType="textPassword"
-            android:textSize="17dp" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordLayout"
@@ -85,7 +60,7 @@
         android:layout_marginStart="23dp"
         android:layout_marginEnd="23dp"
         app:boxStrokeColor="#2DDA93"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         app:hintTextColor="#2DDA93"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -123,8 +98,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="23dp"
+
         android:background="@drawable/custom_button_5"
         android:fontFamily="sans-serif-medium"
         android:text="CHANGE PASSWORD"

@@ -260,14 +260,25 @@
                         app:boxStrokeColor="#2DDA93"
                         app:hintTextColor="#2DDA93"
                         android:background="@drawable/radio_group_border"/>
-
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_marginLeft="330dp"
+                        android:layout_marginTop="-52dp"
+                        android:background="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:gravity="center"
+                        android:onClick="Arrow"
+                        android:textColor="@color/white" />
                     <RadioGroup
+                        android:layout_marginTop="7.2dp"
                         android:id="@+id/subject_radio_group"
                         android:background="@drawable/round_border"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:orientation="vertical"
+                        android:visibility="gone"
                         android:layout_marginStart="20dp">
                         <RadioButton
                             android:id="@+id/radio1"

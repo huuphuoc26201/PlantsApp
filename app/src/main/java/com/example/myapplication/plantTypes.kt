@@ -25,8 +25,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 import android.Manifest;
 import android.content.pm.PackageManager
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 class plantTypes : AppCompatActivity() {
     private lateinit var text: String
@@ -64,6 +66,19 @@ class plantTypes : AppCompatActivity() {
             }else{
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, 1)
+            }
+        }
+
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
             }
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

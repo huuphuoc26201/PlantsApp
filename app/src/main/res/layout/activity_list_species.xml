@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="181dp"
+        android:layout_height="185dp"
         android:background="@drawable/img_br"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,16 +45,19 @@
 
         <TextView
             android:id="@+id/textView15"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="80dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="-20dp"
+            android:layout_marginEnd="-30dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="105dp"
             android:fontFamily="sans-serif-medium"
             android:text="Cactus"
             android:textColor="#26FFFFFF"
             android:textSize="67dp"
+            android:gravity="end"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -77,7 +80,6 @@
         android:id="@+id/RecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
         android:layout_below="@+id/searchView"

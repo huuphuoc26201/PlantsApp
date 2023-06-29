@@ -115,6 +115,7 @@
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/dong_articles" />
 
@@ -128,6 +129,7 @@
         android:background="@color/white"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/dong_species" />

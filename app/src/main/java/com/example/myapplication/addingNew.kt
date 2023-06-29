@@ -6,6 +6,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -14,6 +15,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -30,6 +32,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import de.hdodenhof.circleimageview.CircleImageView
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
@@ -42,14 +46,13 @@ class addingNew : AppCompatActivity() {
     private lateinit var subjectRadioGroup: RadioGroup
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_SELECT_IMAGE = 2
-
-    private lateinit var storageReference: StorageReference
     private lateinit var databaseReference: DatabaseReference
     private lateinit var edt1: String
     private lateinit var edt2: String
     private lateinit var edt3: String
     lateinit var keyrandom:String
     var image_add=" "
+    var arrow:Int=0
     lateinit var ekey:String
     lateinit var keyname:String
     lateinit var image:String
@@ -101,6 +104,19 @@ class addingNew : AppCompatActivity() {
         linear_articles=findViewById(R.id.linear_articles)
         addimage=findViewById(R.id.add)
 
+
+        val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+        // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
+        KeyboardVisibilityEvent.setEventListener(this
+        ) { isOpen ->
+            if (isOpen) {
+                // Nếu bàn phím hiển thị, ẩn đi Bottom Navigation
+                nav_button.visibility = View.GONE
+            } else {
+                // Ngược lại, hiển thị Bottom Navigation
+                nav_button.visibility = View.VISIBLE
+            }
+        }
         //bottom menu
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.person
@@ -143,17 +159,10 @@ class addingNew : AppCompatActivity() {
         des_sp=findViewById(R.id.descriptionsp)
         plant=findViewById(R.id.title1)
         raingbar.setOnRatingBarChangeListener { _, rating, _ ->
-            subjectRadioGroup.visibility = View.GONE
             textevaluate.text = rating.toString()
         }
 
-        //plants types
-        plant.setOnClickListener {
-            subjectRadioGroup.visibility = View.VISIBLE
-        }
-        des_sp.setOnClickListener {
-            subjectRadioGroup.visibility = View.GONE
-        }
+
         subjectRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio1 -> {
@@ -162,6 +171,8 @@ class addingNew : AppCompatActivity() {
                     radioButton3.isChecked = false
                     radioButton4.isChecked = false
                     radioButton5.isChecked = false
+                    plant.setBackgroundResource(R.drawable.round_border)
+                    plant.setTextColor(Color.parseColor("#DC514D4D"))
                 }
                 R.id.radio2 -> {
                     plant.text = "Flowers and Ornamentals"
@@ -169,6 +180,8 @@ class addingNew : AppCompatActivity() {
                     radioButton3.isChecked = false
                     radioButton4.isChecked = false
                     radioButton5.isChecked = false
+                    plant.setBackgroundResource(R.drawable.round_border)
+                    plant.setTextColor(Color.parseColor("#DC514D4D"))
                 }
                 R.id.radio3 -> {
                     plant.text = "Fruit-bearing Plants"
@@ -176,6 +189,8 @@ class addingNew : AppCompatActivity() {
                     radioButton2.isChecked = false
                     radioButton4.isChecked = false
                     radioButton5.isChecked = false
+                    plant.setBackgroundResource(R.drawable.round_border)
+                    plant.setTextColor(Color.parseColor("#DC514D4D"))
                 }
                 R.id.radio4 -> {
                     plant.text = "Herbs and Spices"
@@ -183,6 +198,8 @@ class addingNew : AppCompatActivity() {
                     radioButton2.isChecked = false
                     radioButton3.isChecked = false
                     radioButton5.isChecked = false
+                    plant.setBackgroundResource(R.drawable.round_border)
+                    plant.setTextColor(Color.parseColor("#DC514D4D"))
                 }
                 R.id.radio5 -> {
                     plant.text = "Trees"
@@ -190,6 +207,8 @@ class addingNew : AppCompatActivity() {
                     radioButton2.isChecked = false
                     radioButton4.isChecked = false
                     radioButton3.isChecked = false
+                    plant.setBackgroundResource(R.drawable.round_border)
+                    plant.setTextColor(Color.parseColor("#DC514D4D"))
                 }
             }
         }
@@ -229,7 +248,15 @@ class addingNew : AppCompatActivity() {
 
         // Xử lí button species up bài lên realtime
         btn_specise.setOnClickListener {
+            edtname = namesp.text.toString().trim()
+            edtplant = plant.text.toString().trim()
+            edtdes = des_sp.text.toString().trim()
+            Rating = textevaluate.text.toString().trim()
             if (!validatename()or !validateplant()or !validatdes()) {
+            }
+                else if(edtplant=="Plants Types"){
+                plant.setBackgroundResource(R.drawable.round_error)
+                plant.setTextColor(Color.parseColor("#B30404"))
             } else {
                 builder.setTitle("ADDING NEW")
                     .setMessage("Are you sure you want to post?")
@@ -242,15 +269,16 @@ class addingNew : AppCompatActivity() {
                         } else {
                             image = image_add
                         }
-                        edtname = namesp.text.toString().trim()
-                        edtplant = plant.text.toString().trim()
-                        edtdes = des_sp.text.toString().trim()
-                        Rating = textevaluate.text.toString().trim()
+
+                        val randomString = (1..6)
+                            .map { (('a'..'z') + ('A'..'Z') + ('0'..'9')).random() }
+                            .joinToString("")
+                        val keyspecies= "NHP$randomString"
                         val listSpecies = listSpeciesData(image, edtname, Rating, edtdes, edtplant)
                         val ref = database.getReference("ListSpecies")
                         val key = ref.push().key
                         key?.let {
-                            val userRef = ref.child(edtname)
+                            val userRef = ref.child(keyspecies)
                             userRef.setValue(listSpecies)
                         }
                         val ref1 =
@@ -401,13 +429,8 @@ class addingNew : AppCompatActivity() {
 
     private fun validatename(): Boolean {
         val snamesp= namesp.text.toString().trim()
-        val namePattern="^[a-zA-Z\\d ]{5,30}\$".toRegex()
         return if (snamesp.isEmpty()) {
             namesp.error = "Information cannot be left blank!"
-            false
-        }
-        else if(!snamesp.matches(namePattern)){
-            namesp.error = "Species name include 5-30 characters, do not use special characters"
             false
         }
         else
@@ -544,6 +567,17 @@ class addingNew : AppCompatActivity() {
         val intent = Intent(this, Home::class.java)
         startActivity(intent)
         finish()
+    }
+    fun Arrow(view: View?){
+        val imageArrow=findViewById<ImageView>(R.id.arrow)
+        arrow++
+        if(arrow %2!=0){
+            subjectRadioGroup.visibility = View.VISIBLE
+            imageArrow.setBackgroundResource(R.drawable.ic_baseline_arrow_drop_up_24)
+        }else{
+            subjectRadioGroup.visibility = View.GONE
+            imageArrow.setBackgroundResource(R.drawable.ic_baseline_arrow_drop_down_24)
+        }
     }
 
     // Yêu cầu quyền truy máy ảnh
