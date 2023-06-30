@@ -30,7 +30,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class articles : AppCompatActivity() {
-    private lateinit var text: String
     lateinit var name:String
     private lateinit var dbref : DatabaseReference
     private lateinit var userRecyclerview : RecyclerView
@@ -87,6 +86,7 @@ class articles : AppCompatActivity() {
                 else -> false
             }
         }
+        // Nút nhấn truy cập camera thực hiện tính năng adding new
         val fab=findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -98,6 +98,7 @@ class articles : AppCompatActivity() {
         }
     }
 
+    // get data hiện thị danh sách articles lên recyclerview
     private fun getUserData() {
         dbref = FirebaseDatabase.getInstance().getReference("Articles")
 
@@ -128,6 +129,8 @@ class articles : AppCompatActivity() {
         })
 
     }
+
+    // Tìm kiếm articles
     private fun searchList(text: String) {
         val searchList = java.util.ArrayList<articlesData>()
         for (articlesdata in userArrayList) {
@@ -141,10 +144,12 @@ class articles : AppCompatActivity() {
         userRecyclerview.adapter = articlesAdapter(this@articles,searchList)
 
     }
+
     fun prev(view: View?){
         startActivity(Intent(this, Home::class.java))
         finish()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -206,6 +211,7 @@ class articles : AppCompatActivity() {
 
         }
     }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {

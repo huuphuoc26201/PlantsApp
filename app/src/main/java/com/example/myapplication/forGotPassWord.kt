@@ -46,7 +46,7 @@ class forGotPassWord : AppCompatActivity() {
                             .setCancelable(true) // dialog box in cancellable
                             // set positive button
                             //take two parameters dialogInterface and an int
-                            .setPositiveButton("Confirm"){dialogInterface,it ->
+                            .setPositiveButton("Confirm"){ _, _ ->
                                 val intent = Intent(this, logIn::class.java)
                                 startActivity(intent)
                                 finish() // close the app when yes clicked

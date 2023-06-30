@@ -34,7 +34,7 @@ class plantTypes : AppCompatActivity() {
     private lateinit var text: String
     lateinit var name:String
     private lateinit var dbref : DatabaseReference
-    private lateinit var userRecyclerview : RecyclerView
+    private lateinit var plantTypesRecyclerview : RecyclerView
     private lateinit var userArrayList : ArrayList<listSpeciesData>
     private lateinit var searchView: SearchView
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,16 +49,18 @@ class plantTypes : AppCompatActivity() {
         val formattedData = ename.toLowerCase().capitalize()
         namespecies.text = formattedData
         enamespecies.text = formattedData
-        userRecyclerview = findViewById(R.id.RecyclerView)
-        userRecyclerview.layoutManager = LinearLayoutManager(this)
-        userRecyclerview.setHasFixedSize(true)
+        plantTypesRecyclerview = findViewById(R.id.RecyclerView)
+        plantTypesRecyclerview.layoutManager = LinearLayoutManager(this)
+        plantTypesRecyclerview.setHasFixedSize(true)
         searchView.clearFocus()
         userArrayList = ArrayList()
         userArrayList = arrayListOf<listSpeciesData>()
 
         val myadapter=  listPlantsAdapter(this@plantTypes, userArrayList)
-        userRecyclerview.adapter = myadapter
-        getUserData()
+        plantTypesRecyclerview.adapter = myadapter
+        getPlantTypesData()
+
+        //truy cập camera thực hiện tính năng addingnew
         val fab=findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -106,7 +108,7 @@ class plantTypes : AppCompatActivity() {
         }
     }
 
-    private fun getUserData() {
+    private fun getPlantTypesData() {
         text= intent.getStringExtra("Plants").toString()
         dbref = FirebaseDatabase.getInstance().getReference("ListSpecies")
 
@@ -127,7 +129,7 @@ class plantTypes : AppCompatActivity() {
                                 userArrayList.add(speciesdata!!)
                         }
                     }
-                    userRecyclerview.adapter = listPlantsAdapter(this@plantTypes, userArrayList)
+                    plantTypesRecyclerview.adapter = listPlantsAdapter(this@plantTypes, userArrayList)
                     val itemCount = userArrayList.size
                     val database = FirebaseDatabase.getInstance()
                     val myRef = database.getReference("Plants Types").child(text)
@@ -154,7 +156,7 @@ class plantTypes : AppCompatActivity() {
                 searchList.add(speciesdata)
             }
         }
-        userRecyclerview.adapter = listPlantsAdapter(this@plantTypes,searchList)
+        plantTypesRecyclerview.adapter = listPlantsAdapter(this@plantTypes,searchList)
 
     }
     fun prev(view: View?){

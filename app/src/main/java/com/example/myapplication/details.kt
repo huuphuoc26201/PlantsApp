@@ -61,6 +61,8 @@ class details : AppCompatActivity() {
                 startActivityForResult(intent, 1)
             }
         }
+
+        // kiểm tra bài viết yêu thích
         val users = FirebaseAuth.getInstance().currentUser ?: return
         val eemail = users.email
         database.getReference("Users").orderByChild("email").equalTo(eemail).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -97,7 +99,6 @@ class details : AppCompatActivity() {
         })
 
 
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.home
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
@@ -114,6 +115,7 @@ class details : AppCompatActivity() {
             }
         }
 
+        // hiển thị thông tin chi tiết
         text = intent.getStringExtra("evaluate").toString()
         val f: Float = text.toFloat()
         namespecies.text = intent.getStringExtra("namespecies")

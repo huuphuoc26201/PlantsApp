@@ -38,7 +38,7 @@ class species : AppCompatActivity() {
     lateinit var name:String
 
     private lateinit var Recyclerview: IndexFastScrollRecyclerView
-    private lateinit var userArrayList : ArrayList<speciesData>
+    private lateinit var speciesArrayList : ArrayList<speciesData>
     private lateinit var searchView: SearchView
 
     //private val mData by lazy {DataHelper.getAlphabetFullData() }
@@ -53,9 +53,9 @@ class species : AppCompatActivity() {
         Recyclerview.layoutManager = LinearLayoutManager(this)
         Recyclerview.setHasFixedSize(true)
         searchView.clearFocus()
-        userArrayList = ArrayList()
-        userArrayList = arrayListOf()
-        val myadapter=  speciesAdapter(this@species, userArrayList)
+        speciesArrayList = ArrayList()
+        speciesArrayList = arrayListOf()
+        val myadapter=  speciesAdapter(this@species, speciesArrayList)
         Recyclerview.adapter = myadapter
         getUserData()
         initialiseUI()
@@ -118,11 +118,11 @@ class species : AppCompatActivity() {
 
                     for (userSnapshot in snapshot.children){
                         val speciesData = userSnapshot.getValue(speciesData::class.java)
-                        userArrayList.add(speciesData!!)
+                        speciesArrayList.add(speciesData!!)
 
                     }
                     initialiseUI()
-                    Recyclerview.adapter = speciesAdapter(this@species, userArrayList)
+                    Recyclerview.adapter = speciesAdapter(this@species, speciesArrayList)
 
                 }
 
@@ -139,14 +139,14 @@ class species : AppCompatActivity() {
 
     private fun searchList(text: String) {
         val searchList = ArrayList<speciesData>()
-        for (speciesData in userArrayList) {
+        for (speciesData in speciesArrayList) {
             if (speciesData.species?.lowercase()
                     ?.contains(text.lowercase(Locale.getDefault())) == true
             ) {
                 searchList.add(speciesData)
             }
         }
-//        Recyclerview.adapter = speciesAdapter(this@species, searchList)
+
         val adapter = speciesAdapter(this@species, searchList)
         Recyclerview.adapter = adapter
     }
@@ -154,7 +154,7 @@ class species : AppCompatActivity() {
         dbref = FirebaseDatabase.getInstance().getReference("Species")
         Recyclerview.apply {
             Recyclerview.layoutManager = LinearLayoutManager(this@species)
-            adapter = RecyclerViewAdapter(userArrayList.map { it.species } as ArrayList<String>)
+            adapter = RecyclerViewAdapter(speciesArrayList.map { it.species } as ArrayList<String>)
 
             setIndexbarMargin(-4F)
             setIndexTextSize(12)

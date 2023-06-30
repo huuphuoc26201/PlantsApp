@@ -26,6 +26,7 @@ class splashScreen : AppCompatActivity() {
 
         val handler= Handler(Looper.getMainLooper())
         handler.postDelayed({
+            //Kiểm tra ứng dụng chạy lần đầu trên điện thoại
             if(!preference.getBoolean(pre_show_intro,true)){
                 netActivity()
             }else{
@@ -42,6 +43,7 @@ class splashScreen : AppCompatActivity() {
         editor.apply()
     }
 
+    //kiểm tra ứng dụng đã đăng nhập hay chưa
     private fun netActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user == null) {

@@ -55,45 +55,8 @@ class Profile : AppCompatActivity() {
             fullname.text=name
         }
 
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.person
-        builder = AlertDialog.Builder(this)
-        val edit=findViewById<ImageView>(R.id.edit)
-        val fab=findViewById<FloatingActionButton>(R.id.fab)
-        fab.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
-            }else{
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, 1)
-            }
-        }
-        edit.setOnClickListener {
-            val intent = Intent(this, Edit_Profile::class.java)
-            startActivity(intent)
-            finish()
-        }
-        val addingnew=findViewById<LinearLayout>(R.id.addingnew)
-        addingnew.setOnClickListener {
-            val intent = Intent(this, addingNew::class.java)
-            startActivity(intent)
-            finish()
-        }
-        val sigout=findViewById<LinearLayout>(R.id.signout)
-        sigout.setOnClickListener {
-            logout()
-        }
-        viewpager2=findViewById(R.id.viewPager2)
-        tabLayout=findViewById(R.id.tabLayout)
-        // Thay đổi chiều cao của tab indicator
-        tabLayout.setSelectedTabIndicatorHeight(1)
-
-        adapter= MyFragmentAdapter(supportFragmentManager,lifecycle)
-        tabLayout.addTab(tabLayout.newTab().setText("Species"))
-        tabLayout.addTab(tabLayout.newTab().setText("Articles"))
-
-        viewpager2.adapter=adapter
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.home -> {
@@ -107,6 +70,51 @@ class Profile : AppCompatActivity() {
                 else -> false
             }
         }
+
+        builder = AlertDialog.Builder(this)
+        val edit=findViewById<ImageView>(R.id.edit)
+
+        //truy cập camera thực hiện tính năng adding new
+        val fab=findViewById<FloatingActionButton>(R.id.fab)
+        fab.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
+            }else{
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, 1)
+            }
+        }
+
+        //chuyển tới màn hình edit profile
+        edit.setOnClickListener {
+            val intent = Intent(this, Edit_Profile::class.java)
+            startActivity(intent)
+            finish()
+        }
+        //chuyển tới màn hình addingnew
+        val addingnew=findViewById<LinearLayout>(R.id.addingnew)
+        addingnew.setOnClickListener {
+            val intent = Intent(this, addingNew::class.java)
+            startActivity(intent)
+            finish()
+        }
+        //đăng xuất khỏi tài khoản
+        val sigout=findViewById<LinearLayout>(R.id.signout)
+        sigout.setOnClickListener {
+            logout()
+        }
+
+        viewpager2=findViewById(R.id.viewPager2)
+        tabLayout=findViewById(R.id.tabLayout)
+        // Thay đổi chiều cao của tab indicator
+        tabLayout.setSelectedTabIndicatorHeight(1)
+
+        adapter= MyFragmentAdapter(supportFragmentManager,lifecycle)
+        tabLayout.addTab(tabLayout.newTab().setText("Species"))
+        tabLayout.addTab(tabLayout.newTab().setText("Articles"))
+
+        viewpager2.adapter=adapter
+
         tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab != null) {

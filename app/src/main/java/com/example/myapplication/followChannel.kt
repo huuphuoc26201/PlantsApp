@@ -63,6 +63,7 @@ class followChannel : AppCompatActivity() {
         unfollow=findViewById(R.id.unfollow)
         follow.visibility=View.VISIBLE
         unfollow.visibility=View.GONE
+
         follow.setOnClickListener {
             val text: String? = intent.getStringExtra("name");
             builder.setTitle("Notification")
@@ -106,6 +107,7 @@ class followChannel : AppCompatActivity() {
                 .show()
 
         }
+
         unfollow.setOnClickListener {
             follow.visibility=View.VISIBLE
             unfollow.visibility=View.GONE

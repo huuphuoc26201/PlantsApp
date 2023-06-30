@@ -35,8 +35,8 @@ class listSpecies : AppCompatActivity() {
     private lateinit var text: String
     lateinit var name:String
     private lateinit var dbref : DatabaseReference
-    private lateinit var userRecyclerview : RecyclerView
-    private lateinit var userArrayList : ArrayList<listSpeciesData1>
+    private lateinit var speciesRecyclerview : RecyclerView
+    private lateinit var speciesArrayList : ArrayList<listSpeciesData1>
     private lateinit var searchView: SearchView
     lateinit var namespecies:TextView
     lateinit var enamespecies:TextView
@@ -49,14 +49,14 @@ class listSpecies : AppCompatActivity() {
         bottomNavigationView.selectedItemId = R.id.home
         searchView = findViewById(R.id.searchView)
 
-        userRecyclerview = findViewById(R.id.RecyclerView)
-        userRecyclerview.layoutManager = LinearLayoutManager(this)
-        userRecyclerview.setHasFixedSize(true)
+        speciesRecyclerview = findViewById(R.id.RecyclerView)
+        speciesRecyclerview.layoutManager = LinearLayoutManager(this)
+        speciesRecyclerview.setHasFixedSize(true)
         searchView.clearFocus()
-        userArrayList = ArrayList()
-        userArrayList = arrayListOf<listSpeciesData1>()
-        val myadapter=  listSpeciesAdapter(this@listSpecies, userArrayList)
-        userRecyclerview.adapter = myadapter
+        speciesArrayList = ArrayList()
+        speciesArrayList = arrayListOf<listSpeciesData1>()
+        val myadapter=  listSpeciesAdapter(this@listSpecies, speciesArrayList)
+        speciesRecyclerview.adapter = myadapter
         getUserData()
 
         val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
@@ -126,10 +126,10 @@ class listSpecies : AppCompatActivity() {
                                 if (speciesdata.namespecies?.lowercase()
                                         ?.contains(text.lowercase(Locale.getDefault())) == true
                                 )
-                                    userArrayList.add(speciesdata!!)
+                                    speciesArrayList.add(speciesdata!!)
                             }
                         }
-                        userRecyclerview.adapter = listSpeciesAdapter(this@listSpecies, userArrayList)
+                        speciesRecyclerview.adapter = listSpeciesAdapter(this@listSpecies, speciesArrayList)
 
 
                     }
@@ -156,10 +156,10 @@ class listSpecies : AppCompatActivity() {
                                 if (speciesdata.namespecies?.lowercase()
                                         ?.contains(searchQuery.lowercase(Locale.getDefault())) == true
                                 )
-                                    userArrayList.add(speciesdata!!)
+                                    speciesArrayList.add(speciesdata!!)
                             }
                         }
-                        userRecyclerview.adapter = listSpeciesAdapter(this@listSpecies, userArrayList)
+                        speciesRecyclerview.adapter = listSpeciesAdapter(this@listSpecies, speciesArrayList)
 
 
                     }
@@ -175,14 +175,14 @@ class listSpecies : AppCompatActivity() {
     }
     private fun searchList(text: String) {
         val searchList = java.util.ArrayList<listSpeciesData1>()
-        for (speciesdata in userArrayList) {
+        for (speciesdata in speciesArrayList) {
             if (speciesdata.namespecies?.lowercase()
                     ?.contains(text.lowercase(Locale.getDefault())) == true
             ) {
                 searchList.add(speciesdata)
             }
         }
-        userRecyclerview.adapter = listSpeciesAdapter(this@listSpecies,searchList)
+        speciesRecyclerview.adapter = listSpeciesAdapter(this@listSpecies,searchList)
 
     }
 

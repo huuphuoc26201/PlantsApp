@@ -67,6 +67,8 @@ class Edit_Profile : AppCompatActivity() {
 
             }
         })
+
+        //truy cấp camera
         avatar.setOnClickListener {
             val intent = Intent()
                 .setType("image/*")
@@ -79,7 +81,8 @@ class Edit_Profile : AppCompatActivity() {
             } else {
                 builder.setTitle("Notification")
                     .setMessage("Are you sure you want to change??")
-                    .setCancelable(true) // dialog box in cancellable
+                    .setCancelable(true)
+                    // dialog box in cancellable
                     // set positive button
                     //take two parameters dialogInterface and an int
                     .setPositiveButton("Yes") { _, _ ->
@@ -136,6 +139,7 @@ class Edit_Profile : AppCompatActivity() {
         }
     }
 
+
     private fun firebaseUser() {
         sEmail = editemail.text.toString().trim()
         sfullName = editname.text.toString().trim()
@@ -163,6 +167,7 @@ class Edit_Profile : AppCompatActivity() {
         })
     }
 
+    //hiển thị thông tin cá nhân lên màn hình
     private fun profile() {
         val users = FirebaseAuth.getInstance().currentUser ?: return
         val eemail = users.email

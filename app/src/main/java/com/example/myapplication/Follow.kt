@@ -62,6 +62,7 @@ class Follow : AppCompatActivity() {
                 else -> false
             }
         }
+
         followRecyclerview = findViewById(R.id.RecyclerViewFollow)
         followRecyclerview.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
         followRecyclerview.setHasFixedSize(true)
@@ -95,7 +96,6 @@ class Follow : AppCompatActivity() {
     }
 
     private fun getarrticlesData() {
-
         database = FirebaseDatabase.getInstance()
         val users = FirebaseAuth.getInstance().currentUser ?: return
         val eemail = users.email

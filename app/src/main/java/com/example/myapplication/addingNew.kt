@@ -68,6 +68,7 @@ class addingNew : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     lateinit var linear_species:LinearLayout
     lateinit var linear_articles:LinearLayout
+
     //species
     lateinit var raingbar:RatingBar
     lateinit var textevaluate:TextView
@@ -213,7 +214,7 @@ class addingNew : AppCompatActivity() {
             }
         }
 
-
+        // button species và articles
         species.setOnClickListener {
             species.setBackgroundResource(R.drawable.custom_button_5)
             articles.setBackgroundResource(R.drawable.custom_button_8)

@@ -86,6 +86,7 @@ class myArticles : AppCompatActivity() {
             RcvSpecies.visibility=View.GONE
             RcvArticles.visibility=View.VISIBLE
         }
+
         //menu bottom
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.selectedItemId = R.id.person

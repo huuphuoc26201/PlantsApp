@@ -43,8 +43,8 @@ class Home : AppCompatActivity() {
     lateinit var image:String
     lateinit var name:String
     lateinit var search:SearchView
-    private lateinit var userRecyclerview : RecyclerView
-    private lateinit var Recyclerview1 : RecyclerView
+    private lateinit var plantsTypeRecyclerview : RecyclerView
+    private lateinit var phoToRecyclerview : RecyclerView
     private lateinit var arrayList : ArrayList<plantTypeData>
     private lateinit var arrayList1 : ArrayList<phoToData>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +59,7 @@ class Home : AppCompatActivity() {
 
         search=findViewById(R.id.searchView)
         val nav_button= findViewById<CoordinatorLayout>(R.id.CoordinatorLayout)
+
         // Đăng ký listener để theo dõi sự kiện hiển thị/ẩn đi bàn phím
         KeyboardVisibilityEvent.setEventListener(this
         ) { isOpen ->
@@ -90,8 +91,7 @@ class Home : AppCompatActivity() {
             }
         })
 
-
-
+        // truy cập camera
         addingnew.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
@@ -112,16 +112,21 @@ class Home : AppCompatActivity() {
 
 
         profile()
+
+        //Chuyển tới màn hình profile
         btnprofile.setOnClickListener{
             val intent = Intent(this, Profile::class.java)
             startActivity(intent)
             finish()
 
         }
+        //Chuyển tới màn hình specie
         specie.setOnClickListener{
             startActivity(Intent(this, species::class.java))
             finish()
         }
+
+        //Chuyển tới màn hình article
         val article= findViewById<Button>(R.id.articles)
         article.setOnClickListener{
             startActivity(Intent(this, articles::class.java))
@@ -142,22 +147,22 @@ class Home : AppCompatActivity() {
             }
         }
 
-        userRecyclerview = findViewById(R.id.RecyclerView)
-        userRecyclerview.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
-        userRecyclerview.setHasFixedSize(true)
+        plantsTypeRecyclerview = findViewById(R.id.RecyclerView)
+        plantsTypeRecyclerview.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
+        plantsTypeRecyclerview.setHasFixedSize(true)
         arrayList = ArrayList()
         arrayList = arrayListOf<plantTypeData>()
         val myadapter=plantTypeAdapter(this@Home, arrayList)
-        userRecyclerview.adapter = myadapter
+        plantsTypeRecyclerview.adapter = myadapter
         getUserData()
 
-        Recyclerview1 = findViewById(R.id.RecyclerView1)
-        Recyclerview1.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
-        Recyclerview1.setHasFixedSize(true)
+        phoToRecyclerview = findViewById(R.id.RecyclerView1)
+        phoToRecyclerview.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
+        phoToRecyclerview.setHasFixedSize(true)
         arrayList1 = ArrayList()
         arrayList1 = arrayListOf<phoToData>()
         val myadapter1=phoToAdapter(this@Home, arrayList1)
-        Recyclerview1.adapter = myadapter1
+        phoToRecyclerview.adapter = myadapter1
         getUserData1()
     }
 
@@ -176,7 +181,7 @@ class Home : AppCompatActivity() {
                         arrayList.add(planttypedata!!)
 
                     }
-                    userRecyclerview.adapter = plantTypeAdapter(this@Home, arrayList)
+                    plantsTypeRecyclerview.adapter = plantTypeAdapter(this@Home, arrayList)
 
 
                 }
@@ -206,7 +211,7 @@ class Home : AppCompatActivity() {
 
                     }
 
-                    Recyclerview1.adapter = phoToAdapter(this@Home, arrayList1)
+                    phoToRecyclerview.adapter = phoToAdapter(this@Home, arrayList1)
 
 
                 }

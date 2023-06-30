@@ -57,7 +57,7 @@ class changePasswword : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
                             }
-                        builder.setNegativeButton("Logout") { dialog, which ->
+                        builder.setNegativeButton("Logout") { dialog, _ ->
                             FirebaseAuth.getInstance().signOut()
                             val intent = Intent(this, logIn::class.java)
                             startActivity(intent)

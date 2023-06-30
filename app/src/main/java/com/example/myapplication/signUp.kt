@@ -144,7 +144,7 @@ class signUp : AppCompatActivity() {
     private fun validateemail(): Boolean {
         val mail= email.text.toString().trim()
         return if (mail.isEmpty()) {
-            email.error = "Email can not be blankg"
+            email.error = "Email can not be blank"
             false
         }else if(!Patterns.EMAIL_ADDRESS.matcher(mail).matches()){
             email.error = "Email address is not valid!"

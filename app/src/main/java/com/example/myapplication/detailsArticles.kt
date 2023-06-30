@@ -38,7 +38,6 @@ class detailsArticles : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     private lateinit var usersRef: DatabaseReference
     lateinit var ekey:String
-    lateinit var keyrandom:String
     private lateinit var text: String
     private lateinit var t: String
     private lateinit var t1: String
@@ -204,7 +203,8 @@ class detailsArticles : AppCompatActivity() {
         val unfl=findViewById<TextView>(R.id.textView23)
         builder.setTitle("Notification")
             .setMessage("Are you sure you want to unfollow $text?")
-            .setCancelable(true) // dialog box in cancellable
+            .setCancelable(true)
+            // dialog box in cancellable
             // set positive button
             //take two parameters dialogInterface and an int
             .setPositiveButton("Unfollow"){ _, _ ->

@@ -73,14 +73,16 @@ class logIn : AppCompatActivity() {
 
 
         login.setOnClickListener {
-            val sEmail=email.text.toString().trim();
-            val  sPassword=password.text.toString().trim();
-            if(checkBox.isChecked()){
+            val sEmail=email.text.toString().trim()
+            val  sPassword=password.text.toString().trim()
+            if(checkBox.isChecked){
                 editor.putBoolean("checked",true)
                 editor.apply()
                 storedDataUsingSharedpref(sEmail,sPassword)
+
                 if (!validateemail() or !validatePassword()) {
-                }else {
+                }
+                else {
                     loginUser()
                 }
             }else {
@@ -91,16 +93,19 @@ class logIn : AppCompatActivity() {
                 }
             }
         }
+        //chuyển tới màn hình signup
         signup.setOnClickListener{
             val intent=Intent(this,signUp::class.java)
             startActivity(intent)
         }
 
-
+        //chuyển tói màn hình fogot password
         forGot.setOnClickListener{
             val intent=Intent(this,forGotPassWord::class.java)
             startActivity(intent)
         }
+
+        //Đăng nhập bằng tài khoản google
         val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -122,6 +127,7 @@ class logIn : AppCompatActivity() {
     }
 
 
+    //Quá trình đăng nhập
     private fun loginUser() {
         sEmail=email.text.toString().trim();
         sPassword=password.text.toString().trim();
@@ -132,8 +138,6 @@ class logIn : AppCompatActivity() {
         Handler().postDelayed({progressDialog.dismiss()},2000)
         auth.signInWithEmailAndPassword(sEmail, sPassword)
             .addOnCompleteListener(this) { task ->
-
-
                 if (task.isSuccessful) {
                     val verification=auth.currentUser?.isEmailVerified
                     if(verification==true){
@@ -147,7 +151,7 @@ class logIn : AppCompatActivity() {
                     }
                 } else {
                     try {
-                        throw task.getException()!!;
+                        throw task.exception!!;
                     } catch (e: FirebaseAuthInvalidUserException) {
                         email.error = "User does not exist. Please register a new user.";
                         email.requestFocus();
